@@ -1,0 +1,52 @@
+{
+  "manifest_version": 2,
+  "name": "__MSG_name__",
+  "description": "__MSG_description__",
+  "version": "1.0.1",
+  "author": "李鸿章<paindo@163.com>",
+  "default_locale": "en",
+  "browser_action": {
+    "default_icon": "static/icon19.png",
+    "default_title": "__MSG_browserActionEnabledTitle__"
+  },
+  "background": {
+    "page": "background.html"
+  },
+  "permissions": [
+    "webRequestBlocking",
+    "unlimitedStorage",
+    "notifications",
+    "contextMenus",
+    "https://*/*",
+    "http://*/*",
+    "webRequest",
+    "<all_urls>",
+    "activeTab",
+    "storage",
+    "tabs"
+  ],
+  "icons": {
+    "16": "enabled/icon16.png",
+    "32": "enabled/icon32.png",
+    "48": "enabled/icon48.png",
+    "128": "enabled/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "exclude_matches": [
+        "*://webdict.github.io/*"
+      ],
+      "match_about_blank": true,
+      "all_frames": true,
+      "matches": [
+        "<all_urls>"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "js": [
+        "content.js"
+      ]
+    }
+  ]
+}

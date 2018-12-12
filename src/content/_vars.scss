@@ -1,0 +1,38 @@
+// $pron-uk-color:#09575E;
+// $pron-us-color:#5E040B;
+$pron-uk-color:#0f5499;
+$pron-us-color:#990f3d;
+// $jyut-1-color:$pron-us-color;
+$jyut-1-color:#990f3d;
+// $jyut-2-color:$pron-uk-color;
+$jyut-2-color:#0a5e66;
+// $jyut-3-color:#07255E;
+$jyut-3-color:#0f5499;
+$main-background:#fff1e5;
+$main-border-color:rgb(233, 222, 207);
+$main-shadow-color:rgb(167, 165, 155);
+$hide-less-color:$pron-uk-color;
+$hide-more-color:$pron-us-color;
+$hide-background:$main-background;
+$head-line-height:1.32;
+$pron-line-height:1.1;
+$transition:0.32s;
+$font-size:15px;
+$foot-width-before: 10px;
+$foot-width-after: 8px;
+$font-color:#242424;
+$font-family-text: Arial, Helvetica, sans-serif;
+$font-family-code: Arial, Helvetica, sans-serif;
+
+@mixin slidein($name) {
+  animation: $name 100ms ease-out 0s 1 normal forwards running;
+}
+
+@mixin dispadmar($dis, $pad, $mar) {
+  display: $dis;
+  padding: $pad;
+  margin: $mar;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+}

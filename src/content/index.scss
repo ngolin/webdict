@@ -1,0 +1,371 @@
+@import 'vars';
+.lanx {
+  &-root {
+    @include dispadmar(block, 0, 0);
+    position: absolute;
+    overflow: visible;
+    z-index: 999999;
+    height: 0;
+    width: 0;
+    @for $i from 1 through 9 {
+      &-tada-#{$i}>div {
+        opacity: 0.1*$i;
+      }
+    }
+    &-less {
+      .lanx {
+        &-word,
+        &-back,
+        &-done {
+          color: $pron-uk-color;
+        }
+        &-back .lanx-mark {
+          color: $pron-us-color;
+        }
+        &-hide {
+          &:hover,
+          &::before,
+          &::after {
+            background-color: $hide-less-color;
+          }
+        }
+        &-edit:focus {
+          -moz-outline: $pron-uk-color dotted thin;
+          outline: $pron-uk-color auto medium;
+        }
+        @for $i from 0 through 9 {
+          &-pron-#{$i}:hover~.lanx-head .lanx-mean-#{$i} {
+            color: $pron-uk-color;
+          }
+        }
+      }
+    }
+    &-more {
+      .lanx {
+        &-word,
+        &-back,
+        &-done {
+          color: $pron-us-color;
+        }
+        &-back .lanx-mark {
+          color: $pron-uk-color;
+        }
+        &-hide {
+          &:hover,
+          &::before,
+          &::after {
+            background-color: $hide-more-color;
+          }
+        }
+        &-edit:focus {
+          -moz-outline: $pron-us-color dotted thin;
+          outline: $pron-us-color auto medium;
+        }
+        @for $i from 0 through 9 {
+          &-pron-#{$i}:hover~.lanx-head .lanx-mean-#{$i} {
+            color: $pron-us-color;
+          }
+        }
+      }
+    }
+    &-above {
+      @include slidein(lanx-root-above);
+      .lanx {
+        &-main {
+          bottom: 0;
+        }
+        &-foot {
+          bottom: 0;
+          &::before,
+          &::after {
+            top: -1px;
+          }
+          &::before {
+            border-top: $foot-width-before solid $main-border-color;
+          }
+          &::after {
+            border-top: $foot-width-after solid $main-background;
+          }
+        }
+      }
+    }
+    &-below {
+      @include slidein(lanx-root-below);
+      .lanx {
+        &-main {
+          top: 0;
+        }
+        &-foot {
+          top: 0;
+          &::before,
+          &::after {
+            bottom: -1px;
+          }
+          &::before {
+            border-bottom: $foot-width-before solid $main-border-color;
+          }
+          &::after {
+            border-bottom: $foot-width-after solid $main-background;
+          }
+        }
+      }
+    }
+  }
+  &-main {
+    transition: $transition;
+    @include dispadmar(block, 4px 8px 6px, 0);
+    position: absolute;
+    background-color: $main-background;
+    border: 1px solid $main-border-color;
+    border-radius: 3px;
+    box-shadow: $main-shadow-color 0px 0px 8px;
+    min-width: 180px;
+    height: auto;
+  }
+  &-view {
+    @include dispadmar(flex, 0, 0);
+    flex-flow: column nowrap;
+  }
+  &-head {
+    @include dispadmar(flex, 0, 0);
+    order: -1;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
+  }
+  &-word,
+  &-back {
+    flex: initial;
+    @include dispadmar(block, 0, 0);
+    font-family: $font-family-text;
+    font-weight: 550;
+    line-height: $head-line-height;
+    font-size: $font-size;
+  }
+  &-hide {
+    @include dispadmar(block, 0, 0 4px);
+    flex: initial;
+    line-height: $head-line-height;
+    transform: scale(.8);
+    position: relative;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    transition: $transition;
+    &::before,
+    &::after {
+      @include dispadmar(block, 0, 0);
+      position: absolute;
+      top: 2.5px;
+      left: 7px;
+      height: 11px;
+      content: '';
+      width: 2px;
+      transition: $transition;
+    }
+    &::before {
+      transform: rotate(45deg);
+    }
+    &::after {
+      transform: rotate(-45deg);
+    }
+    &:hover {
+      &::before,
+      &::after {
+        background-color: $hide-background !important;
+      }
+    }
+  }
+  &-mean {
+    @include dispadmar(block, 0, 0);
+    flex: initial;
+    hyphens: auto;
+    line-height: $pron-line-height;
+    font-family: $font-family-text;
+    font-size: $font-size;
+    color: $font-color;
+    &::first-line {
+      line-height: $head-line-height;
+    }
+    span {
+      transition: $transition;
+    }
+  }
+  &-pron {
+    @include dispadmar(flex, 0, 4px 0);
+    justify-content: center;
+    align-items: center;
+    & span {
+      display: inline;
+      white-space: nowrap;
+      font-family: $font-family-code;
+      line-height: 1;
+      font-size: $font-size;
+    }
+    &-row {
+      flex-flow: row nowrap;
+    }
+    &-col {
+      flex-flow: column nowrap;
+    }
+    &-puk {
+      @include dispadmar(block, 0, 0);
+      flex: initial;
+      color: $pron-uk-color;
+      font-family: $font-family-code;
+      white-space: nowrap;
+      line-height: 1;
+      font-size: $font-size;
+    }
+    &-pos {
+      @include dispadmar(block, 0, 0 4px);
+      flex: initial;
+      font-family: $font-family-code;
+      white-space: nowrap;
+      line-height: 1;
+      font-size: $font-size;
+      color: $font-color;
+    }
+    &-pus {
+      @include dispadmar(block, 0, 0);
+      flex: initial;
+      font-family: $font-family-code;
+      color: $pron-us-color;
+      white-space: nowrap;
+      line-height: 1;
+      font-size: $font-size;
+    }
+    &-play {
+      &[disabled] {
+        text-decoration: line-through;
+      }
+    }
+  }
+  &-jyut {
+    &-1 {
+      color: $jyut-1-color;
+    }
+    &-2 {
+      color: $jyut-2-color;
+    }
+    &-3 {
+      color: $jyut-3-color;
+    }
+  }
+  &-form {
+    @include dispadmar(flex, 0, 0); // min-height: 100px;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+  }
+  &-back {
+    order: -1;
+    margin-bottom: 6px;
+    &,
+    & span {
+      display: inline;
+      white-space: nowrap;
+      font-family: $font-family-code;
+      line-height: 1;
+      font-size: $font-size;
+    }
+  }
+  &-mark {
+    display: none !important;
+  }
+  &-edit {
+    @include dispadmar(block, 2px 3px, 0);
+    font-family: $font-family-text;
+    background-color: $main-background !important;
+    border: 1px solid $main-shadow-color;
+    line-height: $head-line-height;
+    box-sizing: border-box;
+    border-radius: 3px;
+    font-size: $font-size;
+    color: $font-color;
+    width: 100%;
+    &:focus {
+      // outline: none;
+      border-color: transparent;
+    }
+  }
+  @for $i from 0 through 9 {
+    &-edit-#{$i}:focus~&-back &-mark-#{$i} {
+      display: inline !important;
+    }
+  }
+  &-area {
+    flex: auto;
+    resize: none;
+    overflow: -moz-scrollbars-none !important;
+    -ms-overflow-style: none !important;
+    &::-webkit-scrollbar {
+      display: none !important;
+    }
+  }
+  &-line+&-line {
+    margin-top: 4px;
+  }
+  &-done {
+    @include dispadmar(block, 6px 9px !important, 4px 0 0 !important);
+    flex: initial;
+    font-family: $font-family-text;
+    background: none !important;
+    line-height: 1;
+    border-radius: 3px !important;
+    border: none !important;
+    outline: none !important;
+    font-size: -1px+$font-size;
+    transition: $transition;
+    box-shadow: none !important;
+    min-height: 0 !important;
+    &:hover {
+      background-color: $main-border-color !important;
+    }
+  }
+  &-foot {
+    transition: $transition;
+    position: absolute;
+    left: 50%;
+    width: 0;
+    height: 0;
+    &::before,
+    &::after {
+      position: absolute;
+      content: '';
+      width: 0;
+      height: 0;
+    }
+    &::before {
+      left: -$foot-width-before;
+      border-left: $foot-width-before solid transparent;
+      border-right: $foot-width-before solid transparent;
+    }
+    &::after {
+      left: -$foot-width-after;
+      border-left: $foot-width-after solid transparent;
+      border-right: $foot-width-after solid transparent;
+    }
+  }
+  &-none {
+    display: none !important;
+  }
+}
+
+@keyframes lanx-root-above {
+  from {
+    transform: translateY(-4px);
+  }
+  to {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes lanx-root-below {
+  from {
+    transform: translateY(4px);
+  }
+  to {
+    transform: translateY(12px);
+  }
+}

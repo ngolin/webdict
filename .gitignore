@@ -1,0 +1,7 @@
+src/content/*.html
+src/content/*.css
+src/content/*.js
+**/__pycache__
+**/.DS_Store
+**/secret.*
+**/dist
