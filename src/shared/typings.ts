@@ -14,6 +14,7 @@ export interface Rect {
   right: number;
   top: number;
   bottom: number;
+  [key: string]: number;
 }
 
 export interface Injector {
