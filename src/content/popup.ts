@@ -43,7 +43,8 @@ export default function (injector: Injector) {
 
   Mean.addEventListener('click'/*'dblclick'*/, event => {
     event.stopPropagation();
-    if ((event.target as HTMLElement).tagName === 'a') {
+    const { tagName } = event.target as HTMLElement;
+    if (tagName.toLowerCase() === 'a') {
       return;
     }
     View.classList.add('lanx-none');
@@ -274,6 +275,15 @@ export default function (injector: Injector) {
   }
 
   function showDict(entry: Entry, rect: Rect) {
+    if (!document.querySelector('.lanx-root')) {
+      // <body>'s and <html>'s position must be static
+      let staticDom = document.body;
+      while (staticDom) {
+        staticDom.style.position = 'static';
+        staticDom = staticDom.parentElement;
+      }
+      document.body.appendChild(Dict);
+    }
     updateContent(entry);
     if (pinpoint(rect)) {
       injector.viewed(entry);
@@ -292,12 +302,10 @@ export default function (injector: Injector) {
   }
 
   function tryToShowDict(text: string, rect: Rect) {
-    if (_rect && ['left', 'right', 'top', 'bottom'].every(key => (_rect as any)[key] === (rect as any)[key])) {
+    if (_rect && ['left', 'right', 'top', 'bottom'].every(key => _rect[key] === rect[key])) {
       return;
     }
-    if (!document.querySelector('.lanx-root')) {
-      document.body.appendChild(Dict);
-    }
+
     const qword = text.substr(2);
     const lang = text.substr(0, 2) as 'zh' | 'en';
 
