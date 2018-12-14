@@ -1,4 +1,4 @@
-import webdictDisabled from './action';
+import isDisabled from './contxt';
 import Fetch from '../fetch';
 import notify from './notify';
 import play from './player';
@@ -7,7 +7,8 @@ import './menus';
 import './life';
 import { ActionData } from '../shared/typings';
 chrome.runtime.onMessage.addListener((ad: ActionData, sender, sendRes) => {
-  if (webdictDisabled()) {
+  const [webdictDisabled, yuelangDisabled] = isDisabled()
+  if (webdictDisabled) {
     return false;
   }
   switch (ad.action) {
@@ -23,7 +24,13 @@ chrome.runtime.onMessage.addListener((ad: ActionData, sender, sendRes) => {
       return false;
     case 'SEARCH_TEXT':
       Fetch.search(ad.data).then(worddata => {
-        sendRes(worddata);
+        if (yuelangDisabled && ad.data.lang === 'zh') {
+          sendRes(worddata.map(({ word, data }) => ({
+            word, data: Object.keys(data).filter(x => !x.startsWith('yue')).reduce((o, k) => (o[k] = data[k], o), {})
+          })));
+        } else {
+          sendRes(worddata);
+        }
       });
       return true;
     case 'DEFINE_WORD':
