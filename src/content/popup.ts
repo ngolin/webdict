@@ -1,10 +1,11 @@
+
 import { Entry, Rect, Injector, WordData } from '../shared/typings';
 import { dePinv, dePron, deJyut } from './coder';
 import postitle from '../shared/postitle';
 import SECRET from '../shared/common';
+import { Dict, Root, RootID } from './dict';
 import cookup from './cookup';
-import Dict from './dict';
-import './index.scss';
+
 
 export default function (injector: Injector) {
   let _entries: Entry[] = [];
@@ -275,14 +276,14 @@ export default function (injector: Injector) {
   }
 
   function showDict(entry: Entry, rect: Rect) {
-    if (!document.querySelector('.lanx-root')) {
+    if (!document.getElementById(RootID)) {
       // <body>'s and <html>'s position must be static
       let staticDom = document.body;
       while (staticDom) {
         staticDom.style.position = 'static';
         staticDom = staticDom.parentElement;
       }
-      document.body.appendChild(Dict);
+      document.body.appendChild(Root);
     }
     updateContent(entry);
     if (pinpoint(rect)) {
