@@ -8,7 +8,7 @@
     height: 0;
     width: 0;
     @for $i from 1 through 9 {
-      &-tada-#{$i}>div {
+      &-tada-#{$i} {
         opacity: 0.1*$i;
       }
     }
@@ -29,10 +29,10 @@
             background-color: $hide-less-color;
           }
         }
-        &-edit:focus {
-          -moz-outline: $pron-uk-color dotted thin;
-          outline: $pron-uk-color auto medium;
-        }
+        // &-edit:focus {
+        //   -moz-outline: $pron-uk-color dotted thin;
+        //   outline: $pron-uk-color auto medium;
+        // }
         @for $i from 0 through 9 {
           &-pron-#{$i}:hover~.lanx-head .lanx-mean-#{$i} {
             color: $pron-uk-color;
@@ -57,10 +57,10 @@
             background-color: $hide-more-color;
           }
         }
-        &-edit:focus {
-          -moz-outline: $pron-us-color dotted thin;
-          outline: $pron-us-color auto medium;
-        }
+        // &-edit:focus {
+        //   -moz-outline: $pron-us-color dotted thin;
+        //   outline: $pron-us-color auto medium;
+        // }
         @for $i from 0 through 9 {
           &-pron-#{$i}:hover~.lanx-head .lanx-mean-#{$i} {
             color: $pron-us-color;
@@ -285,8 +285,8 @@
     color: $font-color;
     width: 100%;
     &:focus {
-      // outline: none;
-      border-color: transparent;
+      outline: none;
+      // border-color: transparent;
     }
   }
   @for $i from 0 through 9 {
