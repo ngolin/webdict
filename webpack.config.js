@@ -1,4 +1,3 @@
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
@@ -8,7 +7,7 @@ module.exports = {
   mode: 'production',
   entry: fs.readdirSync(path.join(__dirname, 'src')).reduce((o, d) => {
 
-    for (const ex of ['main.', 'index.'].reduce((a, n) => a.concat(['ts', 'js', 'tsx', 'jsx'].map(x => n + x)), [])) {
+    for (const ex of ['ts', 'js', 'tsx', 'jsx'].map(x => `main.${x}`)) {
       const p = path.join(__dirname, 'src', d, ex);
       if (fs.existsSync(p)) o[d] = p;
     }
@@ -30,10 +29,10 @@ module.exports = {
       loader: 'babel-loader'
     }, {
       test: /\.s[ac]ss$/i,
-      use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+      use: ['style-loader', 'css-loader', 'sass-loader']
     }, {
       test: /\.css$/i,
-      use: [MiniCssExtractPlugin.loader, 'css-loader']
+      use: ['style-loader', 'css-loader']
     }, {
       test: /\.(svg|png|jpg|gif)$/i,
       loader: 'file-loader',
@@ -51,9 +50,6 @@ module.exports = {
       to: path.join(__dirname, 'dist'),
       from: path.join(__dirname, 'src', 'copy'),
       toType: 'dir'
-    }]),
-    new MiniCssExtractPlugin({
-      filename: "[name].css"
-    })
+    }])
   ]
 };
