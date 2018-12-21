@@ -1,0 +1,16 @@
+@import 'vars';
+body {
+  color: $font-color;
+  user-select: none;
+}
+
+a {
+  color: $main-color;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#root {
+  min-width: 320px;
+  max-height: 480px;
+}
