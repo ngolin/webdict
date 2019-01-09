@@ -28,8 +28,7 @@
           &::after {
             background-color: $hide-less-color;
           }
-        }
-        // &-edit:focus {
+        } // &-edit:focus {
         //   -moz-outline: $pron-uk-color dotted thin;
         //   outline: $pron-uk-color auto medium;
         // }
@@ -56,8 +55,7 @@
           &::after {
             background-color: $hide-more-color;
           }
-        }
-        // &-edit:focus {
+        } // &-edit:focus {
         //   -moz-outline: $pron-us-color dotted thin;
         //   outline: $pron-us-color auto medium;
         // }
@@ -198,7 +196,6 @@
     & span {
       display: inline;
       white-space: nowrap;
-      font-family: $font-family-code;
       line-height: 1;
       font-size: $font-size;
     }
@@ -212,7 +209,7 @@
       @include dispadmar(block, 0, 0);
       flex: initial;
       color: $pron-uk-color;
-      font-family: $font-family-code;
+      font-family: $font-family-text;
       white-space: nowrap;
       line-height: 1;
       font-size: $font-size;
@@ -229,7 +226,7 @@
     &-pus {
       @include dispadmar(block, 0, 0);
       flex: initial;
-      font-family: $font-family-code;
+      font-family: $font-family-text;
       color: $pron-us-color;
       white-space: nowrap;
       line-height: 1;
@@ -265,7 +262,7 @@
     & span {
       display: inline;
       white-space: nowrap;
-      font-family: $font-family-code;
+      font-family: $font-family-text;
       line-height: 1;
       font-size: $font-size;
     }
@@ -285,8 +282,7 @@
     color: $font-color;
     width: 100%;
     &:focus {
-      outline: none;
-      // border-color: transparent;
+      outline: none; // border-color: transparent;
     }
   }
   @for $i from 0 through 9 {
