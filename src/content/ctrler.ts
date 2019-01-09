@@ -11,27 +11,25 @@ export default function (injector: Injector) {
   let mouseupEnabled = true;
   let dictEnabled = true;
 
-  function capture(): [string | null, Rect | null] {
-    try {
-      const sele = window.getSelection();
-      const text = shorten(sele.toString().trim());
-      const rect = sele.getRangeAt(0).getBoundingClientRect();
-      if (
-        text && rect.left >= 0
-        && rect.right <= document.documentElement.clientWidth
-        && rect.right > rect.left && staticText(sele.anchorNode)
-      ) {
-        const x = window.pageXOffset, y = window.pageYOffset;
-        return [
-          text, {
-            left: rect.left + x,
-            right: rect.right + x,
-            bottom: rect.bottom + y,
-            top: rect.top + y
-          }];
-      }
-    } catch (e) { }
-    return [null, null];
+  function capture(): [string, Rect] {
+    const sele = window.getSelection();
+    const text = shorten(sele.toString().trim());
+    const rect = sele.getRangeAt(0).getBoundingClientRect();
+    if (
+      text && rect.left >= 0
+      && rect.right <= document.documentElement.clientWidth
+      && rect.right > rect.left && staticText(sele.anchorNode)
+    ) {
+      const x = window.pageXOffset, y = window.pageYOffset;
+      return [
+        text, {
+          left: rect.left + x,
+          right: rect.right + x,
+          bottom: rect.bottom + y,
+          top: rect.top + y
+        }];
+    }
+    throw new Error();
   }
 
   document.addEventListener('mousedown', ({ target }) => {
@@ -48,12 +46,16 @@ export default function (injector: Injector) {
   }) => {
     if ((deckeyDisabled || shiftKey || ctrlKey || metaKey || altKey) && mouseupEnabled && staticText(target)) {
       if (target !== document) {
-        const [text, rect] = capture();
-        if (text) {
+        try {
+          const [text, rect] = capture();
           Dict.tryToShowDict(text, rect as Rect);
-        } else Dict.hideDict();
+        } catch (e) {
+          Dict.hideDict();
+        }
       }
-    } else if (mousedownTargetIsNotLanxEdit) Dict.hideDict();
+    } else if (mousedownTargetIsNotLanxEdit) {
+      Dict.hideDict();
+    }
   });
 
   return {
