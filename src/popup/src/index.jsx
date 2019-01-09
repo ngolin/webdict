@@ -1,5 +1,5 @@
 import './conf/init.scss';
-import { render } from 'react-dom';
+import {render} from 'react-dom';
 import React from 'react';
 import Update from './page/Update';
 import Joinme from './page/Joinme';
@@ -11,7 +11,7 @@ new Promise(resolve => {
     });
   } catch (e) {
     const background = {
-      contxt: { userflag: 12 },
+      contxt: {userflag: 12},
       webdictDisabled: false,
       yuelangDisabled: true,
       isDisabled: () => {
@@ -27,16 +27,15 @@ new Promise(resolve => {
     resolve(background);
   }
 }).then(background => {
-  const { contxt: { userflag = -1 } } = background;
+  const {
+    contxt: {userflag = -1}
+  } = background;
   const root = document.getElementById('root');
   if (userflag === -1) {
     render(<Update />, root);
   } else if (userflag === 0) {
     render(<Joinme />, root);
   } else {
-    render(
-      <Option {...background} />,
-      root
-    );
+    render(<Option {...background} />, root);
   }
 });

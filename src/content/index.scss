@@ -9,7 +9,7 @@
     width: 0;
     @for $i from 1 through 9 {
       &-tada-#{$i} {
-        opacity: 0.1*$i;
+        opacity: 0.1 * $i;
       }
     }
     &-less {
@@ -33,7 +33,7 @@
         //   outline: $pron-uk-color auto medium;
         // }
         @for $i from 0 through 9 {
-          &-pron-#{$i}:hover~.lanx-head .lanx-mean-#{$i} {
+          &-pron-#{$i}:hover ~ .lanx-head .lanx-mean-#{$i} {
             color: $pron-uk-color;
           }
         }
@@ -60,7 +60,7 @@
         //   outline: $pron-us-color auto medium;
         // }
         @for $i from 0 through 9 {
-          &-pron-#{$i}:hover~.lanx-head .lanx-mean-#{$i} {
+          &-pron-#{$i}:hover ~ .lanx-head .lanx-mean-#{$i} {
             color: $pron-us-color;
           }
         }
@@ -144,7 +144,7 @@
     @include dispadmar(block, 0, 0 4px);
     flex: initial;
     line-height: $head-line-height;
-    transform: scale(.8);
+    transform: scale(0.8);
     position: relative;
     width: 16px;
     height: 16px;
@@ -286,7 +286,7 @@
     }
   }
   @for $i from 0 through 9 {
-    &-edit-#{$i}:focus~&-back &-mark-#{$i} {
+    &-edit-#{$i}:focus ~ &-back &-mark-#{$i} {
       display: inline !important;
     }
   }
@@ -299,7 +299,7 @@
       display: none !important;
     }
   }
-  &-line+&-line {
+  &-line + &-line {
     margin-top: 4px;
   }
   &-done {
@@ -311,7 +311,7 @@
     border-radius: 3px !important;
     border: none !important;
     outline: none !important;
-    font-size: -1px+$font-size;
+    font-size: -1px + $font-size;
     transition: $transition;
     box-shadow: none !important;
     min-height: 0 !important;

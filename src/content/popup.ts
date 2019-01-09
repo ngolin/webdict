@@ -1,23 +1,24 @@
-
-import { Entry, Rect, Injector, WordData } from '../shared/typings';
-import { dePinv, dePron, deJyut } from './coder';
+import {Entry, Rect, Injector, WordData} from '../shared/typings';
+import {dePinv, dePron, deJyut} from './coder';
 import postitle from '../shared/postitle';
 import SECRET from '../shared/common';
-import { Dict, Root, RootID } from './dict';
+import {Dict, Root, RootID} from './dict';
 import cookup from './cookup';
 
-
-export default function (injector: Injector) {
+export default function(injector: Injector) {
   let _entries: Entry[] = [];
   let _rect: Rect = null!;
   let _enterCount = 3;
   let _index = 0;
-  const [
-    Main, View, Word, Hide,
-    Mean, Form, Back, Done
-  ] = [
-    'main', 'view', 'word', 'hide',
-    'mean', 'form', 'back', 'done'
+  const [Main, View, Word, Hide, Mean, Form, Back, Done] = [
+    'main',
+    'view',
+    'word',
+    'hide',
+    'mean',
+    'form',
+    'back',
+    'done'
   ].map(id => Dict.querySelector('.lanx-' + id) as HTMLElement);
 
   window.addEventListener('resize', () => {
@@ -29,22 +30,26 @@ export default function (injector: Injector) {
       _enterCount *= 2;
     }
   });
-  Hide.addEventListener('mouseup', event => {
-    event.stopPropagation();
-    hideDict();
-  }, true);
+  Hide.addEventListener(
+    'mouseup',
+    event => {
+      event.stopPropagation();
+      hideDict();
+    },
+    true
+  );
 
   Word.addEventListener('click', event => {
     event.stopPropagation();
     const len = _entries.length;
     if (len > 1) {
-      showDict(_entries[_index = (_index + 1) % len], _rect);
+      showDict(_entries[(_index = (_index + 1) % len)], _rect);
     }
   });
 
-  Mean.addEventListener('click'/*'dblclick'*/, event => {
+  Mean.addEventListener('click' /*'dblclick'*/, event => {
     event.stopPropagation();
-    const { tagName } = event.target as HTMLElement;
+    const {tagName} = event.target as HTMLElement;
     if (tagName.toLowerCase() === 'a') {
       return;
     }
@@ -56,21 +61,22 @@ export default function (injector: Injector) {
     }
   });
 
-
   Form.addEventListener('submit', event => {
     event.preventDefault();
     event.stopPropagation();
-    const data = Array.from(Form.querySelectorAll('.lanx-edit') as NodeListOf<HTMLInputElement>)
-      .reduce((data, { value, name, defaultValue: deval }) => {
+    const data = Array.from(Form.querySelectorAll('.lanx-edit') as NodeListOf<HTMLInputElement>).reduce(
+      (data, {value, name, defaultValue: deval}) => {
         value = value.trim();
         deval = deval.trim();
         if (value !== deval) {
           data[name] = value;
         }
         return data;
-      }, {});
+      },
+      {}
+    );
     if (Object.keys(data).length) {
-      injector.define({ word: _entries[_index].word, data });
+      injector.define({word: _entries[_index].word, data});
     }
     hideDict();
   });
@@ -127,8 +133,7 @@ export default function (injector: Injector) {
       Dict.classList.remove('lanx-root-less');
       Dict.classList.add('lanx-root-more');
       const last = _index + 1 === _entries.length;
-      Word.setAttribute('title', `${last ? '第一词' : '下一词'} » [${_entries[last ? 0 : _index + 1].word}]`
-      );
+      Word.setAttribute('title', `${last ? '第一词' : '下一词'} » [${_entries[last ? 0 : _index + 1].word}]`);
     } else {
       Dict.classList.remove('lanx-root-more');
       Dict.classList.add('lanx-root-less');
@@ -137,7 +142,7 @@ export default function (injector: Injector) {
     // update prons
     const meand = new Map<string, number[]>();
     ensurePronItem(View, entry.data.length).forEach((div, idx) => {
-      const { mean, lang, pron } = entry.data[idx];
+      const {mean, lang, pron} = entry.data[idx];
       if (meand.has(mean)) {
         meand.get(mean)!.push(idx);
       } else if (mean) {
@@ -163,22 +168,15 @@ export default function (injector: Injector) {
           span.innerHTML = pron[p];
           continue;
         }
-        Array.from(span.querySelectorAll('span[data-code]') as NodeListOf<HTMLElement>)
-          .forEach(button => {
-            const mark = lang === 'en'
-              ? p === 0
-                ? '英式'
-                : '美式'
-              : lang.startsWith('han')
-                ? '汉语'
-                : '粤语';
-            button.addEventListener('mouseup', event => {
-              event.stopPropagation();
-              const el = event.target as HTMLElement;
-              injector.playme({ code: el.dataset.code! });
-            });
-            button.setAttribute('title', `播放${mark} » [${button.innerText}]`);
+        Array.from(span.querySelectorAll('span[data-code]') as NodeListOf<HTMLElement>).forEach(button => {
+          const mark = lang === 'en' ? (p === 0 ? '英式' : '美式') : lang.startsWith('han') ? '汉语' : '粤语';
+          button.addEventListener('mouseup', event => {
+            event.stopPropagation();
+            const el = event.target as HTMLElement;
+            injector.playme({code: el.dataset.code!});
           });
+          button.setAttribute('title', `播放${mark} » [${button.innerText}]`);
+        });
       }
       if (div.offsetWidth > 320) {
         div.classList.remove('lanx-pron-row');
@@ -189,43 +187,60 @@ export default function (injector: Injector) {
       }
     });
     // update mean
-    Mean.innerHTML = Array.from(meand).map(([mean, nums], index) =>
-      meand.size > 1
-        ? `<span class="${nums.map(n => `lanx-mean-${n}`).join(' ')}">${mean}${
-        index < meand.size - 1
-          ? mean.slice(-1) > '\u0100' ? '；' : '; ' : ''
-        }</span>`
-        : mean
-    ).join('') || '[Not Defined]';
+    Mean.innerHTML =
+      Array.from(meand)
+        .map(([mean, nums], index) =>
+          meand.size > 1
+            ? `<span class="${nums.map(n => `lanx-mean-${n}`).join(' ')}">${mean}${
+                index < meand.size - 1 ? (mean.slice(-1) > '\u0100' ? '；' : '; ') : ''
+              }</span>`
+            : mean
+        )
+        .join('') || '[Not Defined]';
     // update form
-    const formdata = entry.data.map(({ lang, pron, mean }) => (
-      lang === 'en' ? pron[1] : lang
-    ).split(SECRET).map(mark => ({
-      mark, text: postitle(mark), mean
-    }))).reduce((a, b) => a.concat(b));
+    const formdata = entry.data
+      .map(({lang, pron, mean}) =>
+        (lang === 'en' ? pron[1] : lang).split(SECRET).map(mark => ({
+          mark,
+          text: postitle(mark),
+          mean
+        }))
+      )
+      .reduce((a, b) => a.concat(b));
 
-    Back.innerHTML = entry.word + formdata.map(({ mark, text }, i) => `<span class="lanx-mark lanx-mark-${i}" title="${text}"> ${mark}</span>`).join('');
+    Back.innerHTML =
+      entry.word +
+      formdata
+        .map(({mark, text}, i) => `<span class="lanx-mark lanx-mark-${i}" title="${text}"> ${mark}</span>`)
+        .join('');
     Form.querySelectorAll('.lanx-edit').forEach(line => {
       Form.removeChild(line);
     });
-    Done.insertAdjacentHTML('beforebegin', formdata.map(({ mark, text, mean }, i) => formdata.length > 1
-      ? `<input class="lanx-edit lanx-edit-${i} lanx-line" name="${mark}" autocomplete="off" maxlength="64" value="${mean.replace(/"/g, '&quot;')}" placeholder="${text}" title="${text}" />`
-      : `<textarea class="lanx-edit lanx-edit-${i} lanx-area" name="${mark}" autocomplete="off" rows="2" maxlength="140" placeholder="${text}" title="${text}">${mean}</textarea>`
-    ).join(''));
+    Done.insertAdjacentHTML(
+      'beforebegin',
+      formdata
+        .map(({mark, text, mean}, i) =>
+          formdata.length > 1
+            ? `<input class="lanx-edit lanx-edit-${i} lanx-line" name="${mark}" autocomplete="off" maxlength="64" value="${mean.replace(
+                /"/g,
+                '&quot;'
+              )}" placeholder="${text}" title="${text}" />`
+            : `<textarea class="lanx-edit lanx-edit-${i} lanx-area" name="${mark}" autocomplete="off" rows="2" maxlength="140" placeholder="${text}" title="${text}">${mean}</textarea>`
+        )
+        .join('')
+    );
   }
 
   function pinpoint(aRect: Rect): boolean {
-    const x = window.pageXOffset, y = window.pageYOffset;
+    const x = window.pageXOffset,
+      y = window.pageYOffset;
     const rRect = {
       left: aRect.left - x,
       right: aRect.right - x,
       top: aRect.top - y,
       bottom: aRect.bottom - y
     };
-    if (Math.max(
-      document.documentElement!.clientWidth,
-      document.documentElement!.offsetWidth
-    ) < Main.offsetWidth) {
+    if (Math.max(document.documentElement!.clientWidth, document.documentElement!.offsetWidth) < Main.offsetWidth) {
       hideDict();
       return false;
     }
@@ -236,11 +251,12 @@ export default function (injector: Injector) {
     const margin = 14;
     let above = rRect.top >= Main.offsetHeight + margin;
     let below = above || document.documentElement!.clientHeight - rRect.bottom >= Main.offsetHeight + margin;
-    above = above || !below && rRect.top + y >= Main.offsetHeight + margin;
-    below = (above || below) || Math.max(
-      document.documentElement!.offsetHeight,
-      document.documentElement!.clientHeight
-    ) - rRect.bottom >= Main.offsetHeight + margin;
+    above = above || (!below && rRect.top + y >= Main.offsetHeight + margin);
+    below =
+      above ||
+      below ||
+      Math.max(document.documentElement!.offsetHeight, document.documentElement!.clientHeight) - rRect.bottom >=
+        Main.offsetHeight + margin;
     if (!(above || below)) {
       hideDict();
       return false;
@@ -260,7 +276,7 @@ export default function (injector: Injector) {
         Main.style.left = (-offset - Main.offsetWidth) / 2 + 'px';
       }
     } else {
-      Main.style.left = (-middle) / 2 + 'px';
+      Main.style.left = -middle / 2 + 'px';
     }
     Dict.style.left = (rRect.right + rRect.left) / 2 + x + 'px';
     if (above) {
@@ -310,10 +326,10 @@ export default function (injector: Injector) {
     const qword = text.substr(2);
     const lang = text.substr(0, 2) as 'zh' | 'en';
 
-    injector.search({ text: qword, lang }, (worddata: WordData[]) => {
+    injector.search({text: qword, lang}, (worddata: WordData[]) => {
       if (worddata.length) {
-        const entries = worddata.map(({ word, data }) => ({ word, data: cookup(data, lang) }));
-        showDict((_entries = entries)[_index = 0], _rect = rect);
+        const entries = worddata.map(({word, data}) => ({word, data: cookup(data, lang)}));
+        showDict((_entries = entries)[(_index = 0)], (_rect = rect));
       }
     });
   }
@@ -321,7 +337,7 @@ export default function (injector: Injector) {
   return {
     hideDict,
     tryToShowDict,
-    onPlayError({ code }: { code: string }) {
+    onPlayError({code}: {code: string}) {
       for (const target of View.querySelectorAll(`[data-code="${code}"]`)) {
         if (target) {
           target.setAttribute('disabled', 'disabled');

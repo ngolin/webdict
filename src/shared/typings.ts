@@ -18,58 +18,58 @@ export interface Rect {
 }
 
 export interface Injector {
-  search(data: { text: string, lang: 'zh' | 'en' }, callback: (entries: WordData[]) => void);
-  define(data: { word: string, data: any });
-  playme(data: { code: string });
+  search(data: {text: string; lang: 'zh' | 'en'}, callback: (entries: WordData[]) => void);
+  define(data: {word: string; data: any});
+  playme(data: {code: string});
   viewed(data: Entry);
 }
 
 export interface WordData {
   word: string;
   data: {
-    [mark: string]: string[]
+    [mark: string]: string[];
   };
 }
 
 type PlayData = {
-  action: 'PLAY_SOUND',
+  action: 'PLAY_SOUND';
   data: {
-    code: string
-  }
+    code: string;
+  };
 };
 type NoteData = {
-  action: 'ADD_NOTE',
+  action: 'ADD_NOTE';
   data: {
-    furl: string,
-    note: string
-  }
+    furl: string;
+    note: string;
+  };
 };
 
 type FindData = {
-  action: 'SEARCH_TEXT',
+  action: 'SEARCH_TEXT';
   data: {
-    text: string,
-    lang: 'zh' | 'en'
-  }
+    text: string;
+    lang: 'zh' | 'en';
+  };
 };
 
 type MeanData = {
-  action: 'DEFINE_WORD',
+  action: 'DEFINE_WORD';
   data: {
-    word: string,
+    word: string;
     data: {
-      [mark: string]: string
-    }
-  }
+      [mark: string]: string;
+    };
+  };
 };
 type ViewData = {
-  action: 'WORD_VIEWED',
+  action: 'WORD_VIEWED';
   data: {
-    word: string,
+    word: string;
     data: {
-      [mark: string]: string
-    }
-  }
+      [mark: string]: string;
+    };
+  };
 };
 
 export type ActionData = PlayData | FindData | NoteData | MeanData | ViewData;

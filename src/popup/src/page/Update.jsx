@@ -1,1 +1,1 @@
-export { default } from '../view/UpdateView';
+export {default} from '../view/UpdateView';

@@ -5,9 +5,9 @@ import play from './player';
 import './request';
 import './menus';
 import './life';
-import { ActionData } from '../shared/typings';
+import {ActionData} from '../shared/typings';
 chrome.runtime.onMessage.addListener((ad: ActionData, sender, sendRes) => {
-  const [webdictDisabled, yuelangDisabled] = isDisabled()
+  const [webdictDisabled, yuelangDisabled] = isDisabled();
   if (webdictDisabled) {
     return false;
   }
@@ -18,16 +18,22 @@ chrome.runtime.onMessage.addListener((ad: ActionData, sender, sendRes) => {
     case 'PLAY_SOUND':
       play(ad.data, data => {
         chrome.tabs.sendMessage(sender.tab!.id!, {
-          action: 'PLAY_ERROR', data
+          action: 'PLAY_ERROR',
+          data
         });
       });
       return false;
     case 'SEARCH_TEXT':
       Fetch.search(ad.data).then(worddata => {
         if (yuelangDisabled && ad.data.lang === 'zh') {
-          sendRes(worddata.map(({ word, data }) => ({
-            word, data: Object.keys(data).filter(x => !x.startsWith('yue')).reduce((o, k) => (o[k] = data[k], o), {})
-          })));
+          sendRes(
+            worddata.map(({word, data}) => ({
+              word,
+              data: Object.keys(data)
+                .filter(x => !x.startsWith('yue'))
+                .reduce((o, k) => ((o[k] = data[k]), o), {})
+            }))
+          );
         } else {
           sendRes(worddata);
         }

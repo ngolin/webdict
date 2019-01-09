@@ -1,8 +1,8 @@
-import { WordData } from '../shared/typings';
+import {WordData} from '../shared/typings';
 import fetch from './_';
 const MAP = new Map<string, WordData[]>();
 
-export default ({ text, lang }): Promise<WordData[]> => {
+export default ({text, lang}): Promise<WordData[]> => {
   const key = text.toLowerCase();
   if (MAP.has(key)) {
     return Promise.resolve(MAP.get(key));
@@ -13,7 +13,6 @@ export default ({ text, lang }): Promise<WordData[]> => {
     });
   }
 };
-
 
 export function uncache(word) {
   for (const [key, data] of MAP) {

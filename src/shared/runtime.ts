@@ -1,4 +1,7 @@
-const enum Action { AddNote, StopFind }
+const enum Action {
+  AddNote,
+  StopFind
+}
 
 interface Message {
   action: Action;

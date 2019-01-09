@@ -31,4 +31,4 @@ export default (mark: string) => {
     default:
       return mark;
   }
-}
+};

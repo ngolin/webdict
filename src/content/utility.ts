@@ -1,21 +1,23 @@
 function detect(char: string) {
   const code = char.charCodeAt(0);
   if (code < 128) {
-    if ('a' <= char && char <= 'z' || 'A' <= char && char <= 'Z' || char === '-') return 1;
+    if (('a' <= char && char <= 'z') || ('A' <= char && char <= 'Z') || char === '-') return 1;
     return 0;
   }
-  if (code >= 0x2E80) {
-    if (0x4E00 <= code && code <= 0x9FD5 ||
-      0x3400 <= code && code <= 0x4DB5 ||
-      0xF900 <= code && code <= 0xFAFF ||
-      0x2F00 <= code && code <= 0x2FDF ||
-      0x2E80 <= code && code <= 0x2EFF ||
-      0x31C0 <= code && code <= 0x31EF ||
-      0x2FF0 <= code && code <= 0x2FFF) {
+  if (code >= 0x2e80) {
+    if (
+      (0x4e00 <= code && code <= 0x9fd5) ||
+      (0x3400 <= code && code <= 0x4db5) ||
+      (0xf900 <= code && code <= 0xfaff) ||
+      (0x2f00 <= code && code <= 0x2fdf) ||
+      (0x2e80 <= code && code <= 0x2eff) ||
+      (0x31c0 <= code && code <= 0x31ef) ||
+      (0x2ff0 <= code && code <= 0x2fff)
+    ) {
       return 2;
     }
   }
-  if (code <= 0x02FF) {
+  if (code <= 0x02ff) {
     if (char === 'ª' || char === 'º') return 1;
     if (char < 'À') return 0;
     if (char <= 'ʯ') {
@@ -76,7 +78,6 @@ export function staticText(element: any) {
   }
   return true;
 }
-
 
 export function removeATag(text) {
   return text.replace(/<\/?a[^>]*>/g, '');

@@ -4,7 +4,6 @@
  *
  */
 
-
 import React from 'react';
 // import { Link } from 'react-router-dom';
 // import { Modal } from 'antd-mobile';
@@ -14,17 +13,13 @@ import tree from 'hife/tree';
 
 import './style.scss';
 
-export default function SwitchView({ disabled, text, onClick }) {
+export default function SwitchView({disabled, text, onClick}) {
   return (
     <div className="switch-view-main">
-      <div className={tree({ 'switch-view-text': { disabled } })}>
-        {text}
-      </div>
-      <div className={tree({ 'switch-view-slider': { disabled } })}
-        onClick={onClick} />
+      <div className={tree({'switch-view-text': {disabled}})}>{text}</div>
+      <div className={tree({'switch-view-slider': {disabled}})} onClick={onClick} />
     </div>
   );
-
 }
 
 // export default class SwitchView extends React.Component {

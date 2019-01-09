@@ -9,9 +9,7 @@ const dpath = {
   '128': 'disabled/icon128.png'
 };
 
-const {
-  icons: epath
-} = chrome.runtime.getManifest();
+const {icons: epath} = chrome.runtime.getManifest();
 
 function setWebdict(disabled) {
   webdictDisabled = disabled;
@@ -23,13 +21,13 @@ function setWebdict(disabled) {
       ? chrome.i18n.getMessage('browserActionDisabledTitle')
       : chrome.i18n.getMessage('browserActionEnabledTitle')
   });
-  chrome.storage.local.set({ webdict: disabled });
+  chrome.storage.local.set({webdict: disabled});
 }
 function setYuelang(disabled) {
   yuelangDisabled = disabled;
-  chrome.storage.local.set({ yuelang: disabled });
+  chrome.storage.local.set({yuelang: disabled});
 }
-chrome.storage.local.get('webdict', ({ webdict, yuelang }) => {
+chrome.storage.local.get('webdict', ({webdict, yuelang}) => {
   setWebdict(webdict);
   setYuelang(yuelang);
 });
@@ -52,7 +50,4 @@ window.setWebdict = setWebdict;
 window.setYuelang = setYuelang;
 window.isDisabled = isDisabled;
 
-Fetch.contxt().then(
-  contxt => window.contxt = contxt,
-  () => window.contxt = {}
-);
+Fetch.contxt().then(contxt => (window.contxt = contxt), () => (window.contxt = {}));

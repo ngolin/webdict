@@ -1,6 +1,4 @@
-const styletext = require(
-  '!css-loader!sass-loader!./index.scss'
-).toString();
+const styletext = require('!css-loader!sass-loader!./index.scss').toString();
 
 export const Dict = document.createElement('div');
 
@@ -36,7 +34,7 @@ Root.style.height = '0';
 Root.style.width = '0';
 Root.id = RootID;
 
-const shadow = Root.attachShadow({ mode: 'open' });
+const shadow = Root.attachShadow({mode: 'open'});
 const style = document.createElement('style');
 style.textContent = styletext;
 shadow.appendChild(style);

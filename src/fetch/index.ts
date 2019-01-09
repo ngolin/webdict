@@ -1,4 +1,4 @@
-export { host } from './_';
+export {host} from './_';
 
 import addnote from './addnote';
 import search from './search';
