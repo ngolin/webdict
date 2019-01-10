@@ -1,4 +1,4 @@
-import {Injector, WordData} from '../shared/typings';
+import {Injector} from '../shared/typings';
 import inject from './ctrler';
 
 const injector: Injector = {
@@ -19,9 +19,9 @@ const injector: Injector = {
   }
 };
 
-const {setDictStatus, onPlayError} = inject(injector);
+const {onPlayError} = inject(injector);
 
-chrome.runtime.onMessage.addListener(({action, data}, _, send) => {
+chrome.runtime.onMessage.addListener(({action, data}) => {
   if (action === 'PLAY_ERROR') {
     onPlayError(data);
   } else if (action === 'ADD_NOTE') {

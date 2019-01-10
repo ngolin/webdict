@@ -6,7 +6,6 @@ export default function(injector: Injector) {
   const Dict = inject(injector);
 
   let mousedownTargetIsNotLanxEdit = true;
-  let deckeyDisabled = true;
   let mouseupEnabled = true;
   let dictEnabled = true;
 
@@ -49,8 +48,8 @@ export default function(injector: Injector) {
     true
   );
 
-  document.addEventListener('mouseup', ({target, shiftKey, ctrlKey, altKey, metaKey}) => {
-    if ((deckeyDisabled || shiftKey || ctrlKey || metaKey || altKey) && mouseupEnabled && staticText(target)) {
+  document.addEventListener('mouseup', ({target}) => {
+    if (mouseupEnabled && staticText(target)) {
       if (target !== document) {
         try {
           const [text, rect] = capture();
@@ -66,13 +65,8 @@ export default function(injector: Injector) {
 
   return {
     onPlayError: Dict.onPlayError,
-    setDictStatus(dict: boolean, deckey: boolean) {
-      if (dict) {
-        return (dictEnabled = !dictEnabled);
-      }
-      if (deckey) {
-        return (deckeyDisabled = !deckeyDisabled);
-      }
+    toggleDictEnabled() {
+      return (dictEnabled = !dictEnabled);
     }
   };
 }
