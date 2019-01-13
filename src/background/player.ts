@@ -4,7 +4,7 @@ const URLXD = {
   zh: [`${host}/static/pron/zh/`, `.ogg`],
   uk: [`${host}/static/pron/uk/`, `.mp3`],
   us: [`${host}/static/pron/us/`, `.mp3`],
-  jp: [`${host}/static/pron/jp/`, `.mp3`]
+  jp: [`${host}/static/pron/jp/`, `.wav`]
 };
 
 const map: {[id: string]: HTMLAudioElement | undefined} = Object.create(null);

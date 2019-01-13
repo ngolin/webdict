@@ -172,8 +172,7 @@ export default function(injector: Injector) {
           const mark = lang === 'en' ? (p === 0 ? '英式' : '美式') : lang.startsWith('han') ? '汉语' : '粤语';
           button.addEventListener('mouseup', event => {
             event.stopPropagation();
-            const el = event.target as HTMLElement;
-            injector.playme({code: el.dataset.code!});
+            injector.playme({code: button.dataset.code!});
           });
           button.setAttribute('title', `播放${mark} » [${button.innerText}]`);
         });
