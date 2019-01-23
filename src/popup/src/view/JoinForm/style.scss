@@ -1,0 +1,26 @@
+/**
+ * 李鸿章<lihz@hugeinfo.com.cn>
+ * 2019年1月14日 19:34
+ *
+ */
+
+@import '../../conf/vars';
+.join-form {
+  &-main {
+    padding: 8px;
+  }
+  &-label,
+  &-username,
+  &-submit {
+    width: 100%;
+  }
+  &-flex {
+    display: flex;
+  }
+  &-resend {
+    width: 5em;
+  }
+  &-password {
+    flex: auto;
+  }
+}
