@@ -1,7 +1,7 @@
-import Fetch from '../fetch';
+import {host} from '../fetch';
 declare const window: any;
 let webdictDisabled = false;
-let yuelangDisabled = true;
+let yuelangDisabled = false;
 const dpath = {
   '16': 'disabled/icon16.png',
   '32': 'disabled/icon32.png',
@@ -11,36 +11,39 @@ const dpath = {
 
 const {icons: epath} = chrome.runtime.getManifest();
 
-function setWebdict(disabled) {
-  webdictDisabled = disabled;
-  chrome.browserAction.setIcon({
-    path: disabled ? dpath : epath
-  });
-  chrome.browserAction.setTitle({
-    title: disabled
-      ? chrome.i18n.getMessage('browserActionDisabledTitle')
-      : chrome.i18n.getMessage('browserActionEnabledTitle')
-  });
-  chrome.storage.local.set({webdict: disabled});
-}
 function setYuelang(disabled) {
   yuelangDisabled = disabled;
   chrome.storage.local.set({yuelang: disabled});
 }
-chrome.storage.local.get('webdict', ({webdict, yuelang}) => {
+
+function setWebdict(disabled = false) {
+  webdictDisabled = disabled;
+  chrome.browserAction.setIcon({
+    path: disabled ? dpath : epath
+  });
+  chrome.storage.local.set({webdict: disabled});
+}
+
+chrome.storage.local.get('webdict', ({webdict = false, yuelang = false}) => {
   setWebdict(webdict);
   setYuelang(yuelang);
 });
 
-// chrome.browserAction.onClicked.addListener(({ url }) => {
-//   // "http", "https", "ws", "wss", "ftp", "ftps", "data" or "file"
-//   if (/^((http|ws|ftp)s?|file|data):/i.test(url)) {
-//     setWebdict(!webdictDisabled);
-//   } else {
-//     const url = chrome.runtime.getURL('console.html');
-//     chrome.tabs.create({ url });
-//   }
-// });
+chrome.browserAction.onClicked.addListener(({id, url}) => {
+  if (url.toLowerCase().startsWith(host)) {
+    setWebdict(!webdictDisabled);
+  } else {
+    chrome.tabs.query({currentWindow: true, url: `${host}/*`}, tabs => {
+      if (tabs && tabs[0]) {
+        chrome.tabs.update(tabs[0].id, {active: true});
+      } else if (/^((http|ws|ftp)s?|file|data):/i.test(url)) {
+        chrome.tabs.create({url: `${host}/`});
+      } else {
+        chrome.tabs.update(id, {url: `${host}/`});
+      }
+    });
+  }
+});
 
 export default function isDisabled() {
   return [webdictDisabled, yuelangDisabled];
@@ -49,5 +52,3 @@ export default function isDisabled() {
 window.setWebdict = setWebdict;
 window.setYuelang = setYuelang;
 window.isDisabled = isDisabled;
-
-Fetch.contxt().then(contxt => (window.contxt = contxt), () => (window.contxt = {}));

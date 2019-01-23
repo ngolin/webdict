@@ -1,6 +1,7 @@
 import isDisabled from './contxt';
-import Fetch from '../fetch';
 import notify from './notify';
+import {host} from '../fetch';
+import Fetch from '../fetch';
 import play from './player';
 import './request';
 import './menus';
@@ -44,7 +45,7 @@ chrome.runtime.onMessage.addListener((ad: ActionData, sender, sendRes) => {
         if (state === -2) {
           notify('权限不足', '请注册登录');
           chrome.tabs.create({
-            url: chrome.runtime.getURL('console.html#/join')
+            url: `${host}/`
           });
         }
       });
