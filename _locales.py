@@ -10,14 +10,6 @@ data = {
         'en': 'webdict - Play with the Web!',
         'zh': '网词快查 - 随时随地，再无生词！'
     },
-    'browserActionDisabledTitle': {
-        'en': 'Enable webdict',
-        'zh': '启用网词'
-    },
-    'browserActionEnabledTitle': {
-        'en': 'Disable webdict',
-        'zh': '停用网词'
-    },
     'addNote': {
         'en': 'Add to Notebook',
         'zh': '保存到笔记本'

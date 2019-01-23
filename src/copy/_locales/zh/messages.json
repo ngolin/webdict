@@ -5,14 +5,8 @@
   "description": {
     "message": "网词快查 - 随时随地，再无生词！"
   },
-  "browserActionDisabledTitle": {
-    "message": "启用网词"
-  },
-  "browserActionEnabledTitle": {
-    "message": "停用网词"
-  },
   "addNote": {
-    "message": "添加到笔记本"
+    "message": "保存到笔记本"
   },
   "reportBug": {
     "message": "报告显示错误"

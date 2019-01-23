@@ -5,12 +5,6 @@
   "description": {
     "message": "webdict - Play with the Web!"
   },
-  "browserActionDisabledTitle": {
-    "message": "Enable webdict"
-  },
-  "browserActionEnabledTitle": {
-    "message": "Disable webdict"
-  },
   "addNote": {
     "message": "Add to Notebook"
   },
