@@ -1,3 +1,6 @@
+import {PageScriptData} from '../shared/types';
+
 import fetch from './_';
 
-export default data => fetch('/app/v1/addnote', data);
+export default ({note, furl}: PageScriptData.AddNote) =>
+  fetch('/app/v1/addnote', {note, furl});

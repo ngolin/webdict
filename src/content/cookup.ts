@@ -1,5 +1,5 @@
-import {Pron} from '../shared/typings';
 import SECRET from '../shared/common';
+import {Pron} from '../shared/types';
 import sort from 'hife/sort';
 export default function(data, lang: 'en' | 'zh'): Pron[] {
   if (lang === 'en') {

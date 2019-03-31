@@ -1,42 +1,49 @@
-import {Injector} from '../shared/typings';
+import {Injector, PageScriptData, BackgroundData} from '../shared/types';
+import {PageScriptAction, BackgroundAction} from '../shared/enums';
 import inject from './ctrler';
-
+type Message = {action: BackgroundAction; data: any};
 const injector: Injector = {
   playme(data) {
-    chrome.runtime.sendMessage({action: 'PLAY_SOUND', data});
+    const action = PageScriptAction.PLAY_SOUND;
+    chrome.runtime.sendMessage({action, data});
   },
-  // { text: string, lang: 'en' | 'zh' }, (entries: WordData[]) => void
   search(data, cb) {
-    chrome.runtime.sendMessage({action: 'SEARCH_TEXT', data}, cb);
+    const action = PageScriptAction.SEARCH_TEXT;
+    chrome.runtime.sendMessage({action, data}, cb);
   },
-  // { word: string, data: any }
   define(data) {
-    chrome.runtime.sendMessage({action: 'DEFINE_WORD', data});
+    const action = PageScriptAction.DEFINE_WORD;
+    chrome.runtime.sendMessage({action, data});
   },
-  // { word: string, lang: 'zh' | 'en' }
   viewed(data) {
-    chrome.runtime.sendMessage({action: 'WORD_VIEWED', data});
+    const action = PageScriptAction.WORD_VIEWED;
+    chrome.runtime.sendMessage({action, data});
   }
 };
 
 const {onPlayError} = inject(injector);
 
-chrome.runtime.onMessage.addListener(({action, data}) => {
-  if (action === 'PLAY_ERROR') {
-    onPlayError(data);
-  } else if (action === 'ADD_NOTE') {
-    const noteText = window
-      .getSelection()
-      .toString()
-      .trim();
-    if (noteText) {
-      chrome.runtime.sendMessage({
-        action,
-        data: {
+chrome.runtime.onMessage.addListener(({action, data}: Message) => {
+  switch (action) {
+    case BackgroundAction.PLAY_ERROR:
+      return onPlayError(data);
+    case BackgroundAction.ADD_NOTE:
+      const noteText = window
+        .getSelection()
+        .toString()
+        .trim();
+      if (noteText) {
+        const {url: furl} = data as BackgroundData.AddNote;
+        const actionData: PageScriptData.AddNote = {
           note: noteText,
-          furl: data.url
-        }
-      });
-    }
+          furl
+        };
+        chrome.runtime.sendMessage({
+          action: PageScriptAction.ADD_NOTE,
+          data: actionData
+        });
+      }
+    default:
+      throw `Unknown action: ${action}`;
   }
 });

@@ -1,4 +1,4 @@
-import {Rect, Injector} from '../shared/typings';
+import {Rect, Injector} from '../shared/types';
 import {shorten, staticText} from './utility';
 import inject from './popup';
 
@@ -40,7 +40,9 @@ export default function(injector: Injector) {
     ({target}) => {
       mouseupEnabled = dictEnabled && staticText(target);
       try {
-        mousedownTargetIsNotLanxEdit = !(target as any).classList.contains('lanx-edit');
+        mousedownTargetIsNotLanxEdit = !(target as any).classList.contains(
+          'lanx-edit'
+        );
       } catch (e) {
         mousedownTargetIsNotLanxEdit = true;
       }

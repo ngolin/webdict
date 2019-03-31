@@ -1,3 +1,4 @@
+import {PageScriptData} from '../shared/types';
 import {host} from '../fetch';
 
 const URLXD = {
@@ -17,7 +18,10 @@ const map: {[id: string]: HTMLAudioElement | undefined} = Object.create(null);
  *
  * `onerror` when playing failed.
  */
-export default function play({code}, onerror: (data: {code: string}) => void) {
+export default function play(
+  {code}: PageScriptData.Playme,
+  onerror: (data: PageScriptData.Playme) => void
+) {
   const oldAudio = map[code];
   if (oldAudio) {
     if (oldAudio.getAttribute('disabled')) {

@@ -1,8 +1,8 @@
-import {Entry, Rect, Injector, WordData} from '../shared/typings';
+import {BackgroundData, Injector, Entry, Rect} from '../shared/types';
 import {dePinv, dePron, deJyut} from './coder';
+import {Dict, Root, RootID} from './dict';
 import postitle from '../shared/postitle';
 import SECRET from '../shared/common';
-import {Dict, Root, RootID} from './dict';
 import cookup from './cookup';
 
 export default function(injector: Injector) {
@@ -10,7 +10,7 @@ export default function(injector: Injector) {
   let _rect: Rect = null!;
   let _enterCount = 3;
   let _index = 0;
-  const [Main, View, Word, Hide, Mean, Form, Back, Done] = [
+  const [Main, View, Word, Hide, Mean, Form, Back, Dall, Down] = [
     'main',
     'view',
     'word',
@@ -18,7 +18,8 @@ export default function(injector: Injector) {
     'mean',
     'form',
     'back',
-    'done'
+    'dall',
+    'down'
   ].map(id => Dict.querySelector('.lanx-' + id) as HTMLElement);
 
   window.addEventListener('resize', () => {
@@ -61,22 +62,45 @@ export default function(injector: Injector) {
     }
   });
 
-  Form.addEventListener('submit', event => {
+  function getDefData() {
+    const data = Array.from(Form.querySelectorAll('.lanx-edit') as NodeListOf<
+      HTMLInputElement
+    >).reduce((data, {value, name, defaultValue: deval}) => {
+      value = value.trim();
+      deval = deval.trim();
+      if (value !== deval) {
+        data[name] = value;
+      }
+      return data;
+    }, {});
+    if (Object.keys(data).length) {
+      return data;
+    }
+    return null;
+  }
+  Dall.addEventListener('click', event => {
     event.preventDefault();
     event.stopPropagation();
-    const data = Array.from(Form.querySelectorAll('.lanx-edit') as NodeListOf<HTMLInputElement>).reduce(
-      (data, {value, name, defaultValue: deval}) => {
-        value = value.trim();
-        deval = deval.trim();
-        if (value !== deval) {
-          data[name] = value;
-        }
-        return data;
-      },
-      {}
-    );
-    if (Object.keys(data).length) {
-      injector.define({word: _entries[_index].word, data});
+    const data = getDefData();
+    if (data) {
+      injector.define({
+        word: _entries[_index].word,
+        data,
+        type: 'all'
+      });
+    }
+    hideDict();
+  });
+  Down.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+    const data = getDefData();
+    if (data) {
+      injector.define({
+        word: _entries[_index].word,
+        data,
+        type: 'own'
+      });
     }
     hideDict();
   });
@@ -133,7 +157,12 @@ export default function(injector: Injector) {
       Dict.classList.remove('lanx-root-less');
       Dict.classList.add('lanx-root-more');
       const last = _index + 1 === _entries.length;
-      Word.setAttribute('title', `${last ? '第一词' : '下一词'} » [${_entries[last ? 0 : _index + 1].word}]`);
+      Word.setAttribute(
+        'title',
+        `${last ? '第一词' : '下一词'} » [${
+          _entries[last ? 0 : _index + 1].word
+        }]`
+      );
     } else {
       Dict.classList.remove('lanx-root-more');
       Dict.classList.add('lanx-root-less');
@@ -160,7 +189,9 @@ export default function(injector: Injector) {
           } else {
             const poses = pron[1].split(SECRET);
             const sep = poses.some(pos => pos.includes(' ')) ? ', ' : ' ';
-            const pos = poses.map(pos => `<span title="${postitle(pos)}">${pos}</span>`).join(sep);
+            const pos = poses
+              .map(pos => `<span title="${postitle(pos)}">${pos}</span>`)
+              .join(sep);
             span.innerHTML = pos;
             continue;
           }
@@ -168,11 +199,22 @@ export default function(injector: Injector) {
           span.innerHTML = pron[p];
           continue;
         }
-        Array.from(span.querySelectorAll('span[data-code]') as NodeListOf<HTMLElement>).forEach(button => {
-          const mark = lang === 'en' ? (p === 0 ? '英式' : '美式') : lang.startsWith('han') ? '汉语' : '粤语';
+        Array.from(span.querySelectorAll('span[data-code]') as NodeListOf<
+          HTMLElement
+        >).forEach(button => {
+          const mark =
+            lang === 'en'
+              ? p === 0
+                ? '英式'
+                : '美式'
+              : lang.startsWith('han')
+              ? '汉语'
+              : '粤语';
           button.addEventListener('mouseup', event => {
             event.stopPropagation();
-            injector.playme({code: button.dataset.code!});
+            injector.playme({
+              code: button.dataset.code!
+            });
           });
           button.setAttribute('title', `播放${mark} » [${button.innerText}]`);
         });
@@ -190,8 +232,14 @@ export default function(injector: Injector) {
       Array.from(meand)
         .map(([mean, nums], index) =>
           meand.size > 1
-            ? `<span class="${nums.map(n => `lanx-mean-${n}`).join(' ')}">${mean}${
-                index < meand.size - 1 ? (mean.slice(-1) > '\u0100' ? '；' : '; ') : ''
+            ? `<span class="${nums
+                .map(n => `lanx-mean-${n}`)
+                .join(' ')}">${mean}${
+                index < meand.size - 1
+                  ? mean.slice(-1) > '\u0100'
+                    ? '；'
+                    : '; '
+                  : ''
               }</span>`
             : mean
         )
@@ -210,13 +258,16 @@ export default function(injector: Injector) {
     Back.innerHTML =
       entry.word +
       formdata
-        .map(({mark, text}, i) => `<span class="lanx-mark lanx-mark-${i}" title="${text}"> ${mark}</span>`)
+        .map(
+          ({mark, text}, i) =>
+            `<span class="lanx-mark lanx-mark-${i}" title="${text}"> ${mark}</span>`
+        )
         .join('');
     Form.querySelectorAll('.lanx-edit').forEach(line => {
       Form.removeChild(line);
     });
-    Done.insertAdjacentHTML(
-      'beforebegin',
+    Form.insertAdjacentHTML(
+      'afterbegin',
       formdata
         .map(({mark, text, mean}, i) =>
           formdata.length > 1
@@ -239,7 +290,12 @@ export default function(injector: Injector) {
       top: aRect.top - y,
       bottom: aRect.bottom - y
     };
-    if (Math.max(document.documentElement!.clientWidth, document.documentElement!.offsetWidth) < Main.offsetWidth) {
+    if (
+      Math.max(
+        document.documentElement!.clientWidth,
+        document.documentElement!.offsetWidth
+      ) < Main.offsetWidth
+    ) {
       hideDict();
       return false;
     }
@@ -249,12 +305,19 @@ export default function(injector: Injector) {
     }
     const margin = 14;
     let above = rRect.top >= Main.offsetHeight + margin;
-    let below = above || document.documentElement!.clientHeight - rRect.bottom >= Main.offsetHeight + margin;
+    let below =
+      above ||
+      document.documentElement!.clientHeight - rRect.bottom >=
+        Main.offsetHeight + margin;
     above = above || (!below && rRect.top + y >= Main.offsetHeight + margin);
     below =
       above ||
       below ||
-      Math.max(document.documentElement!.offsetHeight, document.documentElement!.clientHeight) - rRect.bottom >=
+      Math.max(
+        document.documentElement!.offsetHeight,
+        document.documentElement!.clientHeight
+      ) -
+        rRect.bottom >=
         Main.offsetHeight + margin;
     if (!(above || below)) {
       hideDict();
@@ -307,7 +370,11 @@ export default function(injector: Injector) {
   }
 
   function hideDict() {
-    if (_enterCount < 10 && _enterCount > 1 && Dict.classList.contains(`lanx-root-tada-${_enterCount}`)) {
+    if (
+      _enterCount < 10 &&
+      _enterCount > 1 &&
+      Dict.classList.contains(`lanx-root-tada-${_enterCount}`)
+    ) {
       Dict.classList.remove(`lanx-root-tada-${_enterCount}`);
       _enterCount--;
     }
@@ -318,16 +385,21 @@ export default function(injector: Injector) {
   }
 
   function tryToShowDict(text: string, rect: Rect) {
-    if (_rect && ['left', 'right', 'top', 'bottom'].every(key => _rect[key] === rect[key])) {
+    if (
+      _rect &&
+      ['left', 'right', 'top', 'bottom'].every(key => _rect[key] === rect[key])
+    ) {
       return;
     }
 
     const qword = text.substr(2);
     const lang = text.substr(0, 2) as 'zh' | 'en';
-
-    injector.search({text: qword, lang}, (worddata: WordData[]) => {
+    injector.search({text: qword, lang}, worddata => {
       if (worddata.length) {
-        const entries = worddata.map(({word, data}) => ({word, data: cookup(data, lang)}));
+        const entries = worddata.map(({word, data}) => ({
+          word,
+          data: cookup(data, lang)
+        }));
         showDict((_entries = entries)[(_index = 0)], (_rect = rect));
       }
     });
@@ -336,7 +408,7 @@ export default function(injector: Injector) {
   return {
     hideDict,
     tryToShowDict,
-    onPlayError({code}: {code: string}) {
+    onPlayError({code}: BackgroundData.OnPlayError) {
       for (const target of View.querySelectorAll(`[data-code="${code}"]`)) {
         if (target) {
           target.setAttribute('disabled', 'disabled');
