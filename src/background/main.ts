@@ -5,9 +5,9 @@ import notify from './notify';
 import {host} from '../fetch';
 import Fetch from '../fetch';
 import play from './player';
+import './lifehooks';
 import './request';
 import './menus';
-import './life';
 type Message = {action: PageScriptAction; data: any};
 chrome.runtime.onMessage.addListener(
   ({action, data}: Message, sender, sendRes) => {
@@ -23,7 +23,7 @@ chrome.runtime.onMessage.addListener(
         play(data, data => {
           chrome.tabs.sendMessage(sender.tab!.id!, {
             action: BackgroundAction.PLAY_ERROR,
-            data
+            data,
           });
         });
         return false;
@@ -35,7 +35,7 @@ chrome.runtime.onMessage.addListener(
                 word,
                 data: Object.keys(data)
                   .filter(x => !x.startsWith('yue'))
-                  .reduce((o, k) => ((o[k] = data[k]), o), {})
+                  .reduce((o, k) => ((o[k] = data[k]), o), {}),
               }))
             );
           } else {
@@ -48,7 +48,7 @@ chrome.runtime.onMessage.addListener(
           if (state === -2) {
             notify('权限不足', '请注册登录');
             chrome.tabs.create({
-              url: `${host}/`
+              url: `${host}/`,
             });
           }
         });

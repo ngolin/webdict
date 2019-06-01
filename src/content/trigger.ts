@@ -1,9 +1,9 @@
-import {Rect, Injector} from '../shared/types';
+import {Rect, Fetcher} from '../shared/types';
 import {shorten, staticText} from './utility';
 import handler from './handler';
 
-export default function(injector: Injector) {
-  const Dict = handler(injector);
+export default function(fetcher: Fetcher) {
+  const Dict = handler(fetcher);
 
   let mousedownTargetIsNotLanxEdit = true;
   let mouseupEnabled = true;
@@ -28,8 +28,8 @@ export default function(injector: Injector) {
           left: rect.left + x,
           right: rect.right + x,
           bottom: rect.bottom + y,
-          top: rect.top + y
-        }
+          top: rect.top + y,
+        },
       ];
     }
     throw new Error();
@@ -69,6 +69,6 @@ export default function(injector: Injector) {
     onPlayError: Dict.onPlayError,
     toggleDictEnabled() {
       return (dictEnabled = !dictEnabled);
-    }
+    },
   };
 }

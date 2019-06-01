@@ -1,8 +1,10 @@
-import {Injector, PageScriptData, BackgroundData} from '../shared/types';
+import {PageScriptData, BackgroundData} from '../shared/types';
 import {PageScriptAction, BackgroundAction} from '../shared/enums';
 import trigger from './trigger';
+
 type Message = {action: BackgroundAction; data: any};
-const injector: Injector = {
+
+const {onPlayError} = trigger({
   playme(data) {
     const action = PageScriptAction.PLAY_SOUND;
     chrome.runtime.sendMessage({action, data});
@@ -20,10 +22,8 @@ const injector: Injector = {
   viewed(data) {
     const action = PageScriptAction.WORD_VIEWED;
     chrome.runtime.sendMessage({action, data});
-  }
-};
-
-const {onPlayError} = trigger(injector);
+  },
+});
 
 chrome.runtime.onMessage.addListener(({action, data}: Message) => {
   switch (action) {
@@ -38,11 +38,11 @@ chrome.runtime.onMessage.addListener(({action, data}: Message) => {
         const {url: furl} = data as BackgroundData.AddNote;
         const actionData: PageScriptData.AddNote = {
           note: noteText,
-          furl
+          furl,
         };
         chrome.runtime.sendMessage({
           action: PageScriptAction.ADD_NOTE,
-          data: actionData
+          data: actionData,
         });
       }
     default:

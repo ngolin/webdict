@@ -1,11 +1,11 @@
-import {BackgroundData, Injector, Entry, Rect} from '../shared/types';
+import {BackgroundData, Fetcher, Entry, Rect} from '../shared/types';
 import {dePinv, dePron, deJyut} from './decoder';
-import {Dict, Root, RootID} from './dictdom';
+import {DICTDOM, ensureDomAttached} from './dictdom';
 import postitle from '../shared/postitle';
 import SECRET from '../shared/common';
 import cookup from './cookup';
 
-export default function(injector: Injector) {
+export default function(fetcher: Fetcher) {
   let _entries: Entry[] = [];
   let _rect: Rect = null!;
   let _enterCount = 3;
@@ -19,15 +19,15 @@ export default function(injector: Injector) {
     'form',
     'back',
     'dall',
-    'down'
-  ].map(id => Dict.querySelector(`.lanx-${id}`) as HTMLElement);
+    'down',
+  ].map(id => DICTDOM.querySelector(`.lanx-${id}`) as HTMLElement);
 
   window.addEventListener('resize', () => {
     hideDict();
   });
-  Dict.addEventListener('mouseenter', () => {
-    if (Dict.classList.contains(`lanx-root-tada-${_enterCount}`)) {
-      Dict.classList.remove(`lanx-root-tada-${_enterCount}`);
+  DICTDOM.addEventListener('mouseenter', () => {
+    if (DICTDOM.classList.contains(`lanx-root-tada-${_enterCount}`)) {
+      DICTDOM.classList.remove(`lanx-root-tada-${_enterCount}`);
       _enterCount *= 2;
     }
   });
@@ -83,10 +83,10 @@ export default function(injector: Injector) {
     event.stopPropagation();
     const data = getDefData();
     if (data) {
-      injector.define({
+      fetcher.define({
         word: _entries[_index].word,
         data,
-        type: 'all'
+        type: 'all',
       });
     }
     hideDict();
@@ -96,10 +96,10 @@ export default function(injector: Injector) {
     event.stopPropagation();
     const data = getDefData();
     if (data) {
-      injector.define({
+      fetcher.define({
         word: _entries[_index].word,
         data,
-        type: 'own'
+        type: 'own',
       });
     }
     hideDict();
@@ -146,16 +146,16 @@ export default function(injector: Injector) {
   }
 
   function updateContent(entry: Entry) {
-    Dict.classList.remove('lanx-none');
+    DICTDOM.classList.remove('lanx-none');
     View.classList.remove('lanx-none');
     Form.classList.add('lanx-none');
     Word.innerText = entry.word;
     if (_enterCount < 10 && _index === 0) {
-      Dict.classList.add(`lanx-root-tada-${_enterCount}`);
+      DICTDOM.classList.add(`lanx-root-tada-${_enterCount}`);
     }
     if (_entries.length > 1) {
-      Dict.classList.remove('lanx-root-less');
-      Dict.classList.add('lanx-root-more');
+      DICTDOM.classList.remove('lanx-root-less');
+      DICTDOM.classList.add('lanx-root-more');
       const last = _index + 1 === _entries.length;
       Word.setAttribute(
         'title',
@@ -164,8 +164,8 @@ export default function(injector: Injector) {
         }]`
       );
     } else {
-      Dict.classList.remove('lanx-root-more');
-      Dict.classList.add('lanx-root-less');
+      DICTDOM.classList.remove('lanx-root-more');
+      DICTDOM.classList.add('lanx-root-less');
       Word.setAttribute('title', '词条');
     }
     // update prons
@@ -212,8 +212,8 @@ export default function(injector: Injector) {
               : '粤语';
           button.addEventListener('mouseup', event => {
             event.stopPropagation();
-            injector.playme({
-              code: button.dataset.code!
+            fetcher.playme({
+              code: button.dataset.code!,
             });
           });
           button.setAttribute('title', `播放${mark} » [${button.innerText}]`);
@@ -250,10 +250,10 @@ export default function(injector: Injector) {
         (lang === 'en' ? pron[1] : lang).split(SECRET).map(mark => ({
           mark,
           text: postitle(mark),
-          mean
+          mean,
         }))
       )
-      .reduce((a, b) => a.concat(b));
+      .reduce((a, b) => a.concat(b), []);
 
     Back.innerHTML =
       entry.word +
@@ -288,7 +288,7 @@ export default function(injector: Injector) {
       left: aRect.left - x,
       right: aRect.right - x,
       top: aRect.top - y,
-      bottom: aRect.bottom - y
+      bottom: aRect.bottom - y,
     };
     if (
       Math.max(
@@ -340,32 +340,25 @@ export default function(injector: Injector) {
     } else {
       Main.style.left = -middle / 2 + 'px';
     }
-    Dict.style.left = (rRect.right + rRect.left) / 2 + x + 'px';
+    DICTDOM.style.left = (rRect.right + rRect.left) / 2 + x + 'px';
     if (above) {
-      Dict.style.top = rRect.top + y + 'px';
-      Dict.classList.remove('lanx-root-below');
-      Dict.classList.add('lanx-root-above');
+      DICTDOM.style.top = rRect.top + y + 'px';
+      DICTDOM.classList.remove('lanx-root-below');
+      DICTDOM.classList.add('lanx-root-above');
     } else {
-      Dict.style.top = rRect.bottom + y + 'px';
-      Dict.classList.remove('lanx-root-above');
-      Dict.classList.add('lanx-root-below');
+      DICTDOM.style.top = rRect.bottom + y + 'px';
+      DICTDOM.classList.remove('lanx-root-above');
+      DICTDOM.classList.add('lanx-root-below');
     }
     return true;
   }
 
   function showDict(entry: Entry, rect: Rect) {
-    if (!document.getElementById(RootID)) {
-      // <body>'s and <html>'s position must be static
-      let staticDom = document.body;
-      while (staticDom) {
-        staticDom.style.position = 'static';
-        staticDom = staticDom.parentElement;
+    if (ensureDomAttached()) {
+      updateContent(entry);
+      if (pinpoint(rect)) {
+        fetcher.viewed(entry);
       }
-      document.body.appendChild(Root);
-    }
-    updateContent(entry);
-    if (pinpoint(rect)) {
-      injector.viewed(entry);
     }
   }
 
@@ -373,12 +366,12 @@ export default function(injector: Injector) {
     if (
       _enterCount < 10 &&
       _enterCount > 1 &&
-      Dict.classList.contains(`lanx-root-tada-${_enterCount}`)
+      DICTDOM.classList.contains(`lanx-root-tada-${_enterCount}`)
     ) {
-      Dict.classList.remove(`lanx-root-tada-${_enterCount}`);
+      DICTDOM.classList.remove(`lanx-root-tada-${_enterCount}`);
       _enterCount--;
     }
-    Dict.classList.add('lanx-none');
+    DICTDOM.classList.add('lanx-none');
     _entries = [];
     _rect = null!;
     _index = 0;
@@ -394,11 +387,11 @@ export default function(injector: Injector) {
 
     const qword = text.substr(2);
     const lang = text.substr(0, 2) as 'zh' | 'en';
-    injector.search({text: qword, lang}).then(worddata => {
+    fetcher.search({text: qword, lang}).then(worddata => {
       if (worddata.length) {
         const entries = worddata.map(({word, data}) => ({
           word,
-          data: cookup(data, lang)
+          data: cookup(data, lang),
         }));
         showDict((_entries = entries)[(_index = 0)], (_rect = rect));
       }
@@ -415,6 +408,6 @@ export default function(injector: Injector) {
           target.setAttribute('title', '播放失败');
         }
       }
-    }
+    },
   };
 }

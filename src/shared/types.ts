@@ -40,7 +40,7 @@ export namespace BackgroundData {
   export type AddNote = {url: string};
 }
 
-export interface Injector {
+export interface Fetcher {
   search(data: PageScriptData.Search): Promise<WordData[]>;
   define(data: PageScriptData.Define): void;
   playme(data: PageScriptData.Playme): void;

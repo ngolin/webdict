@@ -1,9 +1,9 @@
 const styletext = require('!css-loader!sass-loader!./index.scss').toString();
 
-export const Dict = document.createElement('div');
+export const DICTDOM = document.createElement('div');
 
-Dict.classList.add('lanx-root');
-Dict.innerHTML = [
+DICTDOM.classList.add('lanx-root');
+DICTDOM.innerHTML = [
   '<div class="lanx-main">',
   '  <div class="lanx-view">',
   '    <div class="lanx-head">',
@@ -20,25 +20,38 @@ Dict.innerHTML = [
   '    <div class="lanx-back"></div>',
   '  </form>',
   '</div>',
-  '<div class="lanx-foot"></div>'
+  '<div class="lanx-foot"></div>',
 ].reduce((a, b) => a + b.trim());
 
-Dict.addEventListener('mouseup', event => {
+DICTDOM.addEventListener('mouseup', event => {
   event.stopPropagation();
 });
 
-export const Root = document.createElement('div');
-export const RootID = 'lanx-wedict-root';
-Root.style.boxSizing = 'border-box';
-Root.style.position = 'static';
-Root.style.outline = 'none';
-Root.style.border = 'none';
-Root.style.height = '0';
-Root.style.width = '0';
-Root.id = RootID;
+const root = document.createElement('div');
+const rootId = 'lanx-wedict-root';
+root.style.boxSizing = 'border-box';
+root.style.position = 'static';
+root.style.outline = 'none';
+root.style.border = 'none';
+root.style.height = '0';
+root.style.width = '0';
+root.id = rootId;
 
-const shadow = Root.attachShadow({mode: 'open'});
+const shadow = root.attachShadow({mode: 'open'});
 const style = document.createElement('style');
 style.textContent = styletext;
 shadow.appendChild(style);
-shadow.appendChild(Dict);
+shadow.appendChild(DICTDOM);
+
+export function ensureDomAttached() {
+  if (!document.getElementById(rootId)) {
+    // <body>'s and <html>'s position must be static
+    let staticDom = document.body;
+    while (staticDom) {
+      staticDom.style.position = 'static';
+      staticDom = staticDom.parentElement;
+    }
+    document.body.appendChild(root);
+  }
+  return true;
+}
