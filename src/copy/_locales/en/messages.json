@@ -1,4 +1,7 @@
 {
+  "LOCALE": {
+    "message": "en"
+  },
   "name": {
     "message": "webdict"
   },

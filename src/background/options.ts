@@ -1,7 +1,16 @@
 import {host} from '../fetch';
-declare const window: any;
-let webdictDisabled = false;
-let yuelangDisabled = false;
+// declare const window: any;
+import {BGWindow, OptionProps} from '.';
+
+declare const window: BGWindow;
+
+let options: OptionProps = {
+  on: true,
+  zh: true,
+  en: true,
+  jp: false
+};
+
 const dpath = {
   '16': 'disabled/icon16.png',
   '32': 'disabled/icon32.png',
@@ -11,27 +20,20 @@ const dpath = {
 
 const {icons: epath} = chrome.runtime.getManifest();
 
-function setYuelang(disabled) {
-  yuelangDisabled = disabled;
-  chrome.storage.local.set({yuelang: disabled});
-}
-
-function setWebdict(disabled = false) {
-  webdictDisabled = disabled;
+function setIcon(enabled) {
   chrome.browserAction.setIcon({
-    path: disabled ? dpath : epath
+    path: enabled ? epath : dpath
   });
-  chrome.storage.local.set({webdict: disabled});
 }
 
-chrome.storage.local.get('webdict', ({webdict = false, yuelang = false}) => {
-  setWebdict(webdict);
-  setYuelang(yuelang);
+chrome.storage.sync.get('options', ({options: _options}) => {
+  setIcon(_options.on);
+  options = _options;
 });
 
 chrome.browserAction.onClicked.addListener(({id, url}) => {
   if (url.toLowerCase().startsWith(host)) {
-    setWebdict(!webdictDisabled);
+    // setWebdict(!webdictDisabled);
   } else {
     chrome.tabs.query({currentWindow: true, url: `${host}/*`}, tabs => {
       if (tabs && tabs[0]) {
@@ -45,10 +47,17 @@ chrome.browserAction.onClicked.addListener(({id, url}) => {
   }
 });
 
-export default function isDisabled() {
-  return [webdictDisabled, yuelangDisabled];
+export default function getOptions() {
+  return options;
 }
 
-window.setWebdict = setWebdict;
-window.setYuelang = setYuelang;
-window.isDisabled = isDisabled;
+window.getOptions = getOptions;
+
+window.setOptions = (key, val) => {
+  if (key == 'on') {
+    setIcon(val);
+  }
+  options = {...options, [key]: val};
+  chrome.storage.sync.set({options});
+  console.log(options);
+};

@@ -1,6 +1,6 @@
 import {BackgroundAction} from '../shared/enums';
 import {PageScriptAction} from '../shared/enums';
-import isDisabled from './contxt';
+import getOptions from './options';
 import notify from './notify';
 import {host} from '../fetch';
 import Fetch from '../fetch';
@@ -11,8 +11,8 @@ import './life';
 type Message = {action: PageScriptAction; data: any};
 chrome.runtime.onMessage.addListener(
   ({action, data}: Message, sender, sendRes) => {
-    const [webdictDisabled, yuelangDisabled] = isDisabled();
-    if (webdictDisabled) {
+    const {on, jp} = getOptions();
+    if (!on) {
       return false;
     }
     switch (action) {
@@ -29,7 +29,7 @@ chrome.runtime.onMessage.addListener(
         return false;
       case PageScriptAction.SEARCH_TEXT:
         Fetch.search(data).then(worddata => {
-          if (yuelangDisabled && data.lang === 'zh') {
+          if (!jp && data.lang === 'zh') {
             sendRes(
               worddata.map(({word, data}) => ({
                 word,

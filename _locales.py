@@ -1,4 +1,8 @@
 data = {
+    'LOCALE': {
+        'en': 'en',
+        'zh': 'zh'
+    },
     'name': {
         'en': 'webdict',
         'zh': '网词快查',
