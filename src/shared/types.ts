@@ -41,8 +41,8 @@ export namespace BackgroundData {
 }
 
 export interface Injector {
-  search(data: PageScriptData.Search, callback: PageScriptData.Search.Callback);
-  define(data: PageScriptData.Define);
-  playme(data: PageScriptData.Playme);
-  viewed(data: PageScriptData.Viewed);
+  search(data: PageScriptData.Search): Promise<WordData[]>;
+  define(data: PageScriptData.Define): void;
+  playme(data: PageScriptData.Playme): void;
+  viewed(data: PageScriptData.Viewed): void;
 }

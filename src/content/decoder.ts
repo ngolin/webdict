@@ -25,7 +25,9 @@ export function dePron(input: string, lang: string) {
     const suffix = p.charAt(p.length - 1) === ']';
     if (suffix) p = p.substring(0, p.length - 1);
     const pronMark = _dePron(p);
-    output += `<span class="lanx-pron-play" data-code="${lang + pronMark[1]}">${pronMark[0]}</span>`;
+    output += `<span class="lanx-pron-play" data-code="${lang + pronMark[1]}">${
+      pronMark[0]
+    }</span>`;
     if (suffix) output += ']';
   }
   return output;
@@ -69,7 +71,8 @@ export function dePinv(pinv: string, lang: string) {
               .filter(Boolean)
               .map(
                 pinv =>
-                  `<span class="lanx-pron-play" data-code="${lang + pinv}">${pinv
+                  `<span class="lanx-pron-play" data-code="${lang +
+                    pinv}">${pinv
                     .split('-')
                     .map(pinv => _dPinv(pinv))
                     .join(' ')}</span>`
@@ -82,7 +85,9 @@ export function dePinv(pinv: string, lang: string) {
                 const i = pinv.indexOf(mark);
                 const t = pinv.slice(i + 1).trim();
                 __pinv__ = pinv.slice(0, i).trim();
-                return `${each(__pinv__)}<span title="${data[mark]}：${t.replace(/"/g, '&quot;')}"> ※</span>`;
+                return `${each(__pinv__)}<span title="${
+                  data[mark]
+                }：${t.replace(/"/g, '&quot;')}"> ※</span>`;
               }
             }
             return each((__pinv__ = pinv));
@@ -99,7 +104,9 @@ export function dePinv(pinv: string, lang: string) {
               )
               .join(' '))}」的异读音"> ※</span>`;
           } else {
-            return `${each(pinv)}<span title="「${__pinv__}」的异读音"> ※</span>`;
+            return `${each(
+              pinv
+            )}<span title="「${__pinv__}」的异读音"> ※</span>`;
           }
         })
         .join(', ');
@@ -132,9 +139,17 @@ export function dePinv(pinv: string, lang: string) {
 
 function _deJyut(jyut: string, end: string) {
   if (/^[a-z]+[1-6]$/.test(jyut)) {
-    const yut1 = Array.from(/^(n?[bpmfdtlgkhzcsj]?w?)([aeiouy]?.*)([1-6])$/i.exec(jyut)).slice(1);
+    const yut1 = Array.from(
+      /^(n?[bpmfdtlgkhzcsj]?w?)([aeiouy]?.*)([1-6])$/i.exec(jyut)
+    ).slice(1);
     return yut1
-      .map((j, i) => (j ? `<span class="lanx-jyut-${i + 1}">${j}${i === yut1.length - 1 ? end : ''}</span>` : ''))
+      .map((j, i) =>
+        j
+          ? `<span class="lanx-jyut-${i + 1}">${j}${
+              i === yut1.length - 1 ? end : ''
+            }</span>`
+          : ''
+      )
       .join('');
   }
   return jyut + end;
@@ -161,9 +176,15 @@ export function deJyut(jyut: string, lang: string) {
             .map(jyut => {
               const yut3 = jyut.split('-').filter(jyut => jyut);
               return `<span class="lanx-pron-play" data-code="${lang + jyut}"${
-                i2 !== 0 ? `title="「${yut2[0].replace(/-/g, ' ')}」的異讀音"` : ''
+                i2 !== 0
+                  ? `title="「${yut2[0].replace(/-/g, ' ')}」的異讀音"`
+                  : ''
               }>${yut3
-                .map((jyut, i3) => _deJyut(jyut, i3 + 1 === yut3.length && (end2 || end1)) || '')
+                .map(
+                  (jyut, i3) =>
+                    _deJyut(jyut, i3 + 1 === yut3.length && (end2 || end1)) ||
+                    ''
+                )
                 .join(' ')}</span>`;
             })
             .join(' ');

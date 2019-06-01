@@ -1,9 +1,9 @@
 import {Rect, Injector} from '../shared/types';
 import {shorten, staticText} from './utility';
-import inject from './popup';
+import handler from './handler';
 
 export default function(injector: Injector) {
-  const Dict = inject(injector);
+  const Dict = handler(injector);
 
   let mousedownTargetIsNotLanxEdit = true;
   let mouseupEnabled = true;

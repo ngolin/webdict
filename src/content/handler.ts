@@ -1,6 +1,6 @@
 import {BackgroundData, Injector, Entry, Rect} from '../shared/types';
-import {dePinv, dePron, deJyut} from './coder';
-import {Dict, Root, RootID} from './dict';
+import {dePinv, dePron, deJyut} from './decoder';
+import {Dict, Root, RootID} from './dictdom';
 import postitle from '../shared/postitle';
 import SECRET from '../shared/common';
 import cookup from './cookup';
@@ -20,7 +20,7 @@ export default function(injector: Injector) {
     'back',
     'dall',
     'down'
-  ].map(id => Dict.querySelector('.lanx-' + id) as HTMLElement);
+  ].map(id => Dict.querySelector(`.lanx-${id}`) as HTMLElement);
 
   window.addEventListener('resize', () => {
     hideDict();
@@ -394,7 +394,7 @@ export default function(injector: Injector) {
 
     const qword = text.substr(2);
     const lang = text.substr(0, 2) as 'zh' | 'en';
-    injector.search({text: qword, lang}, worddata => {
+    injector.search({text: qword, lang}).then(worddata => {
       if (worddata.length) {
         const entries = worddata.map(({word, data}) => ({
           word,

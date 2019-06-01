@@ -1,15 +1,17 @@
 import {Injector, PageScriptData, BackgroundData} from '../shared/types';
 import {PageScriptAction, BackgroundAction} from '../shared/enums';
-import inject from './ctrler';
+import trigger from './trigger';
 type Message = {action: BackgroundAction; data: any};
 const injector: Injector = {
   playme(data) {
     const action = PageScriptAction.PLAY_SOUND;
     chrome.runtime.sendMessage({action, data});
   },
-  search(data, cb) {
+  search(data) {
     const action = PageScriptAction.SEARCH_TEXT;
-    chrome.runtime.sendMessage({action, data}, cb);
+    return new Promise(resolve =>
+      chrome.runtime.sendMessage({action, data}, resolve)
+    );
   },
   define(data) {
     const action = PageScriptAction.DEFINE_WORD;
@@ -21,7 +23,7 @@ const injector: Injector = {
   }
 };
 
-const {onPlayError} = inject(injector);
+const {onPlayError} = trigger(injector);
 
 chrome.runtime.onMessage.addListener(({action, data}: Message) => {
   switch (action) {
