@@ -12,7 +12,7 @@ data = {
     },
     'description': {
         'en': 'webdict - Play with the Web!',
-        'zh': '网词快查 - 随时随地，再无生词！'
+        'zh': '网词快查 - 遇到生词，一触即发！'
     },
     'addNote': {
         'en': 'Add to Notebook',
