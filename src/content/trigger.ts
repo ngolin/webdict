@@ -3,25 +3,24 @@ import {shorten, staticText} from './utility';
 import handler from './handler';
 
 export default function(fetcher: Fetcher) {
-  const Dict = handler(fetcher);
-
+  const {tryToShowDict, hideDict, onPlayError} = handler(fetcher);
   let mousedownTargetIsNotLanxEdit = true;
   let mouseupEnabled = true;
   let dictEnabled = true;
 
   function capture(): [string, Rect] {
-    const sele = window.getSelection();
-    const text = shorten(sele.toString().trim());
-    const rect = sele.getRangeAt(0).getBoundingClientRect();
+    const sltn = window.getSelection();
+    const text = shorten(sltn.toString().trim());
+    const rect = sltn.getRangeAt(0).getBoundingClientRect();
     if (
       text &&
       rect.left >= 0 &&
       rect.right <= document.documentElement.clientWidth &&
       rect.right > rect.left &&
-      staticText(sele.anchorNode)
+      staticText(sltn.anchorNode)
     ) {
-      const x = window.pageXOffset,
-        y = window.pageYOffset;
+      const x = window.pageXOffset;
+      const y = window.pageYOffset;
       return [
         text,
         {
@@ -40,10 +39,10 @@ export default function(fetcher: Fetcher) {
     ({target}) => {
       mouseupEnabled = dictEnabled && staticText(target);
       try {
-        mousedownTargetIsNotLanxEdit = !(target as any).classList.contains(
+        mousedownTargetIsNotLanxEdit = !(target as HTMLElement).classList.contains(
           'lanx-edit'
         );
-      } catch (e) {
+      } catch {
         mousedownTargetIsNotLanxEdit = true;
       }
     },
@@ -55,18 +54,18 @@ export default function(fetcher: Fetcher) {
       if (target !== document) {
         try {
           const [text, rect] = capture();
-          Dict.tryToShowDict(text, rect as Rect);
-        } catch (e) {
-          Dict.hideDict();
+          tryToShowDict(text, rect as Rect);
+        } catch {
+          hideDict();
         }
       }
     } else if (mousedownTargetIsNotLanxEdit) {
-      Dict.hideDict();
+      hideDict();
     }
   });
 
   return {
-    onPlayError: Dict.onPlayError,
+    onPlayError,
     toggleDictEnabled() {
       return (dictEnabled = !dictEnabled);
     },

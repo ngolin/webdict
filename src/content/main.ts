@@ -26,26 +26,25 @@ const {onPlayError} = trigger({
 });
 
 chrome.runtime.onMessage.addListener(({action, data}: Message) => {
-  switch (action) {
-    case BackgroundAction.PLAY_ERROR:
-      return onPlayError(data);
-    case BackgroundAction.ADD_NOTE:
-      const noteText = window
-        .getSelection()
-        .toString()
-        .trim();
-      if (noteText) {
-        const {url: furl} = data as BackgroundData.AddNote;
-        const actionData: PageScriptData.AddNote = {
-          note: noteText,
-          furl,
-        };
-        chrome.runtime.sendMessage({
-          action: PageScriptAction.ADD_NOTE,
-          data: actionData,
-        });
-      }
-    default:
-      throw `Unknown action: ${action}`;
+  if (action == BackgroundAction.PLAY_ERROR) {
+    onPlayError(data);
+  } else if (action == BackgroundAction.ADD_NOTE) {
+    const noteText = window
+      .getSelection()
+      .toString()
+      .trim();
+    if (noteText) {
+      const {url: furl} = data as BackgroundData.AddNote;
+      const actionData: PageScriptData.AddNote = {
+        note: noteText,
+        furl,
+      };
+      chrome.runtime.sendMessage({
+        action: PageScriptAction.ADD_NOTE,
+        data: actionData,
+      });
+    }
+  } else {
+    console.error(`Unknown action: ${action}`);
   }
 });
