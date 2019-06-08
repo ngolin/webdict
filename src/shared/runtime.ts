@@ -1,6 +1,6 @@
 const enum Action {
   AddNote,
-  StopFind
+  StopFind,
 }
 
 interface Message {
@@ -11,11 +11,17 @@ type Response = (res: any) => void;
 type Sender = chrome.runtime.MessageSender;
 
 namespace Runtime {
-  export function addEventListener(callback: (msg: Message, sender: Sender, sendRes: Response) => void) {
+  export function addEventListener(
+    callback: (msg: Message, sender: Sender, sendRes: Response) => void
+  ) {
     chrome.runtime.onMessage.addListener(callback);
   }
 
-  export function sendMessageToTab(tabId: number, message: Message, sendRes?: Response) {
+  export function sendMessageToTab(
+    tabId: number,
+    message: Message,
+    sendRes?: Response
+  ) {
     if (sendRes) chrome.tabs.sendMessage(tabId, message, sendRes);
     else chrome.tabs.sendMessage(tabId, message);
   }

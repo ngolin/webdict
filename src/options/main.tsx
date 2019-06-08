@@ -1,8 +1,8 @@
-import {h, render, Component} from 'preact';
+import { h, render, Component } from 'preact';
 import get from './locales';
 import tree from 'hife/tree';
-import {BGWindow} from '../background';
-import {OptionProps} from '.';
+import { BGWindow } from '../background';
+import { OptionProps } from '.';
 import './style.scss';
 const locale = get(chrome.i18n.getUILanguage());
 interface AppState extends OptionProps {
@@ -17,26 +17,26 @@ class App extends Component<any, AppState> {
       on: false,
       zh: false,
       en: false,
-      jp: false
+      jp: false,
     };
   }
   componentDidMount() {
     document.title = locale.title;
     chrome.runtime.getBackgroundPage((bgpage: BGWindow) => {
-      this.setState({...bgpage.getOptions(), loading: false});
+      this.setState({ ...bgpage.getOptions(), loading: false });
       this.bgpage = bgpage;
     });
   }
-  onChange = ({target: {name, checked}}) => {
+  onChange = ({ target: { name, checked } }) => {
     if (this.state.loading) return;
-    this.setState({[name]: checked} as any, () => {
+    this.setState({ [name]: checked } as any, () => {
       this.bgpage.setOptions(name, checked);
     });
   };
   render() {
     return (
-      <div className={tree({options: {loading: this.state.loading}})}>
-        {locale.options.map(({desc, opts, head}) => (
+      <div className={tree({ options: { loading: this.state.loading } })}>
+        {locale.options.map(({ desc, opts, head }) => (
           <Item
             desc={desc}
             opts={opts}
@@ -50,7 +50,7 @@ class App extends Component<any, AppState> {
   }
 }
 
-function Item({desc, opts, head, state, onChange}) {
+function Item({ desc, opts, head, state, onChange }) {
   const disabled = opts[0].name !== 'on' && !state.on;
   const sopt = opts.map(sopt => (
     <div class="options-item-form-item">
@@ -64,7 +64,7 @@ function Item({desc, opts, head, state, onChange}) {
   ));
 
   return (
-    <div class={tree(['options-item', {disabled}])}>
+    <div class={tree(['options-item', { disabled }])}>
       <h4>{opts.length > 1 ? head : sopt}</h4>
       <p>{desc}</p>
       {opts.length > 1 && <div class="options-item-form">{sopt}</div>}
@@ -72,11 +72,11 @@ function Item({desc, opts, head, state, onChange}) {
   );
 }
 
-function Label({name, title, value, onChange, disabled}) {
+function Label({ name, title, value, onChange, disabled }) {
   return (
-    <label for={name} className={tree({disabled})}>
+    <label for={name} className={tree({ disabled })}>
       <input
-        style={{cursor: 'pointer'}}
+        style={{ cursor: 'pointer' }}
         type="checkbox"
         disabled={disabled}
         name={name}

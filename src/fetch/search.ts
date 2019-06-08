@@ -1,8 +1,8 @@
-import {WordData, PageScriptData} from '../shared/types';
+import { WordData, PageScriptData } from '../shared/types';
 import fetch from './_';
 const MAP = new Map<string, WordData[]>();
 
-export default ({text, lang}: PageScriptData.Search): Promise<WordData[]> => {
+export default ({ text, lang }: PageScriptData.Search): Promise<WordData[]> => {
   const key = text.toLowerCase();
   if (MAP.has(key)) {
     return Promise.resolve(MAP.get(key));

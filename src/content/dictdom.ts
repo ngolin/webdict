@@ -37,7 +37,7 @@ root.style.height = '0';
 root.style.width = '0';
 root.id = rootId;
 
-const shadow = root.attachShadow({mode: 'open'});
+const shadow = root.attachShadow({ mode: 'open' });
 const style = document.createElement('style');
 style.textContent = styletext;
 shadow.appendChild(style);

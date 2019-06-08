@@ -1,14 +1,14 @@
-import {PageScriptData} from '../shared/types';
-import {host} from '../fetch';
+import { PageScriptData } from '../shared/types';
+import { host } from '../fetch';
 
 const URLXD = {
   zh: [`${host}/static/pron/zh/`, `.ogg`],
   uk: [`${host}/static/pron/uk/`, `.mp3`],
   us: [`${host}/static/pron/us/`, `.mp3`],
-  jp: [`${host}/static/pron/jp/`, `.wav`]
+  jp: [`${host}/static/pron/jp/`, `.wav`],
 };
 
-const map: {[id: string]: HTMLAudioElement | undefined} = Object.create(null);
+const map: { [id: string]: HTMLAudioElement | undefined } = Object.create(null);
 /**
  * `id` formats:
  *
@@ -19,13 +19,13 @@ const map: {[id: string]: HTMLAudioElement | undefined} = Object.create(null);
  * `onerror` when playing failed.
  */
 export default function play(
-  {code}: PageScriptData.Playme,
+  { code }: PageScriptData.Playme,
   onerror: (data: PageScriptData.Playme) => void
 ) {
   const oldAudio = map[code];
   if (oldAudio) {
     if (oldAudio.getAttribute('disabled')) {
-      if (onerror) onerror({code});
+      if (onerror) onerror({ code });
     } else {
       oldAudio.play();
     }
@@ -41,7 +41,7 @@ export default function play(
     newAudio.onerror = (event: ErrorEvent) => {
       event.stopPropagation();
       newAudio.setAttribute('disabled', 'disabled');
-      if (onerror) onerror({code});
+      if (onerror) onerror({ code });
     };
   }
 }

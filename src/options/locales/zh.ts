@@ -6,9 +6,9 @@ export default {
       opts: [
         {
           name: 'on',
-          title: '开启'
-        }
-      ]
+          title: '开启',
+        },
+      ],
     },
     {
       head: '可查语言',
@@ -16,17 +16,17 @@ export default {
       opts: [
         {
           name: 'en',
-          title: '英语'
+          title: '英语',
         },
         {
           name: 'zh',
-          title: '汉语'
+          title: '汉语',
         },
         {
           name: 'jp',
-          title: '粤语'
-        }
-      ]
-    }
-  ]
+          title: '粤语',
+        },
+      ],
+    },
+  ],
 };

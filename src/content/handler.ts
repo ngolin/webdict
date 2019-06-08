@@ -1,6 +1,6 @@
-import {BackgroundData, Fetcher, Entry, Rect} from '../shared/types';
-import {dePinv, dePron, deJyut} from './decoder';
-import {DICTDOM, ensureDomAttached} from './dictdom';
+import { BackgroundData, Fetcher, Entry, Rect } from '../shared/types';
+import { dePinv, dePron, deJyut } from './decoder';
+import { DICTDOM, ensureDomAttached } from './dictdom';
 import postitle from '../shared/postitle';
 import SECRET from '../shared/common';
 import cookup from './cookup';
@@ -50,7 +50,7 @@ export default function(fetcher: Fetcher) {
 
   Mean.addEventListener('click' /*'dblclick'*/, event => {
     event.stopPropagation();
-    const {tagName} = event.target as HTMLElement;
+    const { tagName } = event.target as HTMLElement;
     if (tagName.toLowerCase() === 'a') {
       return;
     }
@@ -65,7 +65,7 @@ export default function(fetcher: Fetcher) {
   function getDefData() {
     const data = Array.from(Form.querySelectorAll('.lanx-edit') as NodeListOf<
       HTMLInputElement
-    >).reduce((data, {value, name, defaultValue: deval}) => {
+    >).reduce((data, { value, name, defaultValue: deval }) => {
       value = value.trim();
       deval = deval.trim();
       if (value !== deval) {
@@ -171,7 +171,7 @@ export default function(fetcher: Fetcher) {
     // update prons
     const meand = new Map<string, number[]>();
     ensurePronItem(View, entry.data.length).forEach((div, idx) => {
-      const {mean, lang, pron} = entry.data[idx];
+      const { mean, lang, pron } = entry.data[idx];
       if (meand.has(mean)) {
         meand.get(mean)!.push(idx);
       } else if (mean) {
@@ -246,7 +246,7 @@ export default function(fetcher: Fetcher) {
         .join('') || '[Not Defined]';
     // update form
     const formdata = entry.data
-      .map(({lang, pron, mean}) =>
+      .map(({ lang, pron, mean }) =>
         (lang === 'en' ? pron[1] : lang).split(SECRET).map(mark => ({
           mark,
           text: postitle(mark),
@@ -259,7 +259,7 @@ export default function(fetcher: Fetcher) {
       entry.word +
       formdata
         .map(
-          ({mark, text}, i) =>
+          ({ mark, text }, i) =>
             `<span class="lanx-mark lanx-mark-${i}" title="${text}"> ${mark}</span>`
         )
         .join('');
@@ -269,7 +269,7 @@ export default function(fetcher: Fetcher) {
     Form.insertAdjacentHTML(
       'afterbegin',
       formdata
-        .map(({mark, text, mean}, i) =>
+        .map(({ mark, text, mean }, i) =>
           formdata.length > 1
             ? `<input class="lanx-edit lanx-edit-${i} lanx-line" name="${mark}" autocomplete="off" maxlength="64" value="${mean.replace(
                 /"/g,
@@ -387,9 +387,9 @@ export default function(fetcher: Fetcher) {
 
     const qword = text.substr(2);
     const lang = text.substr(0, 2) as 'zh' | 'en';
-    fetcher.search({text: qword, lang}).then(worddata => {
+    fetcher.search({ text: qword, lang }).then(worddata => {
       if (worddata.length) {
-        const entries = worddata.map(({word, data}) => ({
+        const entries = worddata.map(({ word, data }) => ({
           word,
           data: cookup(data, lang),
         }));
@@ -401,7 +401,7 @@ export default function(fetcher: Fetcher) {
   return {
     hideDict,
     tryToShowDict,
-    onPlayError({code}: BackgroundData.OnPlayError) {
+    onPlayError({ code }: BackgroundData.OnPlayError) {
       for (const target of View.querySelectorAll(`[data-code="${code}"]`)) {
         if (target) {
           target.setAttribute('disabled', 'disabled');

@@ -8,16 +8,16 @@ const urld: any = {
   'themes.googleusercontent.com': 'google-themes.lug.ustc.edu.cn',
   // 'fonts.gstatic.com': 'fonts-gstatic.lug.ustc.edu.cn', # 封锁已解除
   'storage.googleapis.com': 'storage-googleapis.proxy.ustclug.o··rg',
-  'gerrit.googlesource.com': 'gerrit-googlesource.proxy.ustclug.org'
+  'gerrit.googlesource.com': 'gerrit-googlesource.proxy.ustclug.org',
 };
 
 chrome.webRequest.onBeforeRequest.addListener(
-  ({url}) => {
+  ({ url }) => {
     for (const key in urld) {
       url = url.replace(key, urld[key]);
     }
-    return {redirectUrl: url};
+    return { redirectUrl: url };
   },
-  {urls: Object.keys(urld).map(url => `*://${url}/*`)},
+  { urls: Object.keys(urld).map(url => `*://${url}/*`) },
   ['blocking']
 );

@@ -1,9 +1,9 @@
-import {Rect, Fetcher} from '../shared/types';
-import {shorten, staticText} from './utility';
+import { Rect, Fetcher } from '../shared/types';
+import { shorten, staticText } from './utility';
 import handler from './handler';
 
 export default function(fetcher: Fetcher) {
-  const {tryToShowDict, hideDict, onPlayError} = handler(fetcher);
+  const { tryToShowDict, hideDict, onPlayError } = handler(fetcher);
   let mousedownTargetIsNotLanxEdit = true;
   let mouseupEnabled = true;
   let dictEnabled = true;
@@ -36,7 +36,7 @@ export default function(fetcher: Fetcher) {
 
   document.addEventListener(
     'mousedown',
-    ({target}) => {
+    ({ target }) => {
       mouseupEnabled = dictEnabled && staticText(target);
       try {
         mousedownTargetIsNotLanxEdit = !(target as HTMLElement).classList.contains(
@@ -49,7 +49,7 @@ export default function(fetcher: Fetcher) {
     true
   );
 
-  document.addEventListener('mouseup', ({target}) => {
+  document.addEventListener('mouseup', ({ target }) => {
     if (mouseupEnabled && staticText(target)) {
       if (target !== document) {
         try {

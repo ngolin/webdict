@@ -6,9 +6,9 @@ export default {
       opts: [
         {
           name: 'on',
-          title: 'Enable webdict'
-        }
-      ]
+          title: 'Enable webdict',
+        },
+      ],
     },
     {
       head: 'Select languages',
@@ -16,17 +16,17 @@ export default {
       opts: [
         {
           name: 'en',
-          title: 'English'
+          title: 'English',
         },
         {
           name: 'zh',
-          title: 'Chinese'
+          title: 'Chinese',
         },
         {
           name: 'jp',
-          title: 'Cantonese'
-        }
-      ]
-    }
-  ]
+          title: 'Cantonese',
+        },
+      ],
+    },
+  ],
 };

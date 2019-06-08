@@ -1,17 +1,17 @@
-import {BackgroundAction} from '../shared/enums';
-import {PageScriptAction} from '../shared/enums';
+import { BackgroundAction } from '../shared/enums';
+import { PageScriptAction } from '../shared/enums';
 import getOptions from './options';
 import notify from './notify';
-import {host} from '../fetch';
+import { host } from '../fetch';
 import Fetch from '../fetch';
 import play from './player';
 import './lifehooks';
 import './request';
 import './menus';
-type Message = {action: PageScriptAction; data: any};
+type Message = { action: PageScriptAction; data: any };
 chrome.runtime.onMessage.addListener(
-  ({action, data}: Message, sender, sendRes) => {
-    const {on, jp} = getOptions();
+  ({ action, data }: Message, sender, sendRes) => {
+    const { on, jp } = getOptions();
     if (!on) {
       return false;
     }
@@ -31,7 +31,7 @@ chrome.runtime.onMessage.addListener(
         Fetch.search(data).then(worddata => {
           if (!jp && data.lang === 'zh') {
             sendRes(
-              worddata.map(({word, data}) => ({
+              worddata.map(({ word, data }) => ({
                 word,
                 data: Object.keys(data)
                   .filter(x => !x.startsWith('yue'))

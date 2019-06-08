@@ -40,7 +40,11 @@ export function updateStorage(
   } catch (e) {}
 }
 
-export function insertStorage(sectionKey: sectionKey, itemKey: string, item: Item) {
+export function insertStorage(
+  sectionKey: sectionKey,
+  itemKey: string,
+  item: Item
+) {
   try {
     chrome.storage.local.get(sectionKey, (storage: Storage) => {
       if (!storage[sectionKey]) storage[sectionKey] = Object.create(null);

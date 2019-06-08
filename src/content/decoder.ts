@@ -1,4 +1,4 @@
-import {a as ipal, b as secretKey} from '../shared/secret';
+import { a as ipal, b as secretKey } from '../shared/secret';
 
 function _dePron(input: string): [string, string] {
   let output = '',
@@ -79,7 +79,7 @@ export function dePinv(pinv: string, lang: string) {
               )
               .join(' ');
           if (i === 0) {
-            const data = {'<': '繁体', '>': '简体', '=': '正体'};
+            const data = { '<': '繁体', '>': '简体', '=': '正体' };
             for (const mark of '<>=') {
               if (pinv.includes(mark)) {
                 const i = pinv.indexOf(mark);

@@ -1,7 +1,12 @@
 function detect(char: string) {
   const code = char.charCodeAt(0);
   if (code < 128) {
-    if (('a' <= char && char <= 'z') || ('A' <= char && char <= 'Z') || char === '-') return 1;
+    if (
+      ('a' <= char && char <= 'z') ||
+      ('A' <= char && char <= 'Z') ||
+      char === '-'
+    )
+      return 1;
     return 0;
   }
   if (code >= 0x2e80) {
@@ -63,11 +68,15 @@ export function shorten(text: string | null | undefined): string | null {
     len++;
   }
   if (max === 1 && len === 1) return null;
-  return (max === 2 ? 'zh' : 'en') + text.substr(0, Math.min(len, 32)).replace("'", '’');
+  return (
+    (max === 2 ? 'zh' : 'en') +
+    text.substr(0, Math.min(len, 32)).replace("'", '’')
+  );
 }
 
 export function staticText(element: any) {
-  if (document.designMode && 'on' === document.designMode.toLowerCase().trim()) return false;
+  if (document.designMode && 'on' === document.designMode.toLowerCase().trim())
+    return false;
   while (element) {
     if (element.isContentEditable) return false;
     if (element.tagName) {

@@ -4,6 +4,6 @@ export default (title, message) => {
     title,
     message,
     silent: true,
-    iconUrl: chrome.extension.getURL('enabled/icon32.png')
+    iconUrl: chrome.extension.getURL('enabled/icon32.png'),
   } as any);
 };
