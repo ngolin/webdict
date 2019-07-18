@@ -1,13 +1,13 @@
 import { BackgroundAction } from '../shared/enums';
 import { PageScriptAction } from '../shared/enums';
 import getOptions from './options';
-import notify from './notify';
+import notify from './notifics';
 import { host } from '../fetch';
 import Fetch from '../fetch';
 import play from './player';
 import './lifehooks';
 import './request';
-import './menus';
+import './rclick';
 type Message = { action: PageScriptAction; data: any };
 chrome.runtime.onMessage.addListener(
   ({ action, data }: Message, sender, sendRes) => {

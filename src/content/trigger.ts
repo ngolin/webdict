@@ -42,7 +42,7 @@ export default function(fetcher: Fetcher) {
         mousedownTargetIsNotLanxEdit = !(target as HTMLElement).classList.contains(
           'lanx-edit'
         );
-      } catch {
+      } catch (e) {
         mousedownTargetIsNotLanxEdit = true;
       }
     },
@@ -55,7 +55,7 @@ export default function(fetcher: Fetcher) {
         try {
           const [text, rect] = capture();
           tryToShowDict(text, rect as Rect);
-        } catch {
+        } catch (e) {
           hideDict();
         }
       }

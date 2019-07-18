@@ -9,9 +9,9 @@
     "message": "webdict - Play with the Web!"
   },
   "addNote": {
-    "message": "Add to Notebook"
+    "message": "Add Note"
   },
-  "reportBug": {
-    "message": "Report Page Bug"
+  "highlight": {
+    "message": "Highlight"
   }
 }

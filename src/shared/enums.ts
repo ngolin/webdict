@@ -10,6 +10,7 @@ export const enum PageScriptAction {
 export const enum BackgroundAction {
   PLAY_ERROR = 'PLAY_ERRER',
   ADD_NOTE = 'ADD_NOTE',
+  HIGHLIGHT = 'HIGHLIGHT_SELECTION',
 }
 
 /** 语言代号，用于请求_查词接口_等 */

@@ -1,7 +1,7 @@
 import { PageScriptData, BackgroundData } from '../shared/types';
 import { PageScriptAction, BackgroundAction } from '../shared/enums';
 import trigger from './trigger';
-
+import highlight from './hlselection';
 type Message = { action: BackgroundAction; data: any };
 
 const { onPlayError } = trigger({
@@ -28,6 +28,8 @@ const { onPlayError } = trigger({
 chrome.runtime.onMessage.addListener(({ action, data }: Message) => {
   if (action == BackgroundAction.PLAY_ERROR) {
     onPlayError(data);
+  } else if (action == BackgroundAction.HIGHLIGHT) {
+    highlight();
   } else if (action == BackgroundAction.ADD_NOTE) {
     const noteText = window
       .getSelection()
