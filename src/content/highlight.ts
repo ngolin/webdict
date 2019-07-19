@@ -10,10 +10,14 @@ function departArray<T>(array: T[], item: T) {
 function treeTextNodes(ranges: Range[], nodes: Node[]) {
   for (const node of nodes.filter(n => n)) {
     if (node.nodeType === Node.TEXT_NODE) {
-      const rs = document.createRange();
-      rs.setStartBefore(node);
-      rs.setEndAfter(node);
-      ranges.push(rs);
+      // FIXING: avoid to insert extra elements,
+      // extra elements may break the CSS layout
+      if (node.nodeValue.trim()) {
+        const rs = document.createRange();
+        rs.setStartBefore(node);
+        rs.setEndAfter(node);
+        ranges.push(rs);
+      }
     } else {
       treeTextNodes(ranges, Array.from(node.childNodes));
     }
