@@ -1,5 +1,5 @@
 export default {
-  title: 'webdict - options',
+  title: 'webdict - Options',
   options: [
     {
       desc: 'Enable webdict to popup to look up selected words',

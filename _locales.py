@@ -8,8 +8,8 @@ data = {
         # 'zh_MO': '网词快查'
     },
     "description": {
-        "en": "webdict - Play with the Web!",
-        "zh": "网词快查 - 遇到生词，一触即发！",
+        "en": "webdict - Play with New Words!",
+        "zh": "网词快查 - 网页查词，一触即发！",
         #
     },
     "addNote": {
@@ -21,14 +21,14 @@ data = {
         "en": "Highlight",
         "zh": "高亮显示"
         #
-    }
+    },
 }
 
 
 def main():
-    from os.path import exists
+    from os.path import exists, dirname, join
     from os import makedirs
-    from json import dump
+    from json import dumps
 
     locales = {locale for head in data for locale in data[head]}
     locales.discard("description")
@@ -41,11 +41,11 @@ def main():
                 content[head]["description"] = data[head]["description"]
         localed[locale] = content
     for locale in localed:
-        path = "src/copy/_locales/" + locale
+        path = join(dirname(__file__), f"src/copy/_locales/{locale}")
         if not exists(path):
             makedirs(path)
         with open(path + "/messages.json", mode="w", encoding="utf-8") as f:
-            dump(localed[locale], f, ensure_ascii=False, indent=2)
+            f.write(dumps(localed[locale], ensure_ascii=False, indent=2) + "\n")
 
 
 if __name__ == "__main__":
