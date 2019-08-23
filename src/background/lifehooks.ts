@@ -5,4 +5,4 @@
 //   }
 // });
 
-chrome.runtime.setUninstallURL('https://webdict.github.io/');
+// chrome.runtime.setUninstallURL('https://webdict.github.io/');

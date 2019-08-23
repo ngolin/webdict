@@ -1,6 +1,6 @@
 import { PageScriptData } from '../shared/types';
+import { Cache } from './cache';
 import { host } from '../fetch';
-
 const URLXD = {
   zh: [`${host}/static/pron/zh/`, `.ogg`],
   uk: [`${host}/static/pron/uk/`, `.mp3`],
@@ -8,7 +8,7 @@ const URLXD = {
   jp: [`${host}/static/pron/jp/`, `.wav`],
 };
 
-const map: { [id: string]: HTMLAudioElement | undefined } = Object.create(null);
+const cache = new Cache<HTMLAudioElement>(128);
 /**
  * `id` formats:
  *
@@ -22,7 +22,7 @@ export default function play(
   { code }: PageScriptData.Playme,
   onerror: (data: PageScriptData.Playme) => void
 ) {
-  const oldAudio = map[code];
+  const oldAudio = cache.get(code);
   if (oldAudio) {
     if (oldAudio.getAttribute('disabled')) {
       if (onerror) onerror({ code });
@@ -30,7 +30,8 @@ export default function play(
       oldAudio.play();
     }
   } else {
-    const newAudio = (map[code] = document.createElement('audio'));
+    const newAudio = document.createElement('audio');
+    cache.add(code, newAudio);
     newAudio.preload = 'auto';
     newAudio.autoplay = true;
     const [lang, url] = code.split(':');
