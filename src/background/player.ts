@@ -10,11 +10,12 @@ const URLXD = {
 
 const cache = new Cache<HTMLAudioElement>(128);
 /**
- * `id` formats:
+ * `code` formats:
  *
- * 1. `zh:pin1.ogg`
- * 2. `uk:C7IZLO-RJ.mp3`
- * 3. `us:F7I-NLO-KJ.mp3`
+ * 1. `zh:pin1`
+ * 2. `uk:C7IZLO-RJ`
+ * 3. `us:F7I-NLO-KJ`
+ * 3. `jp:sik6`
  *
  * `onerror` when playing failed.
  */
@@ -30,19 +31,19 @@ export default function play(
       oldAudio.play();
     }
   } else {
-    const newAudio = document.createElement('audio');
-    cache.add(code, newAudio);
-    newAudio.preload = 'auto';
-    newAudio.autoplay = true;
-    const [lang, url] = code.split(':');
+    const [lang, file] = code.split(':');
     if (URLXD[lang]) {
-      const [a, b] = URLXD[lang];
-      newAudio.src = a + url + b;
+      const newAudio = document.createElement('audio');
+      cache.add(code, newAudio);
+      newAudio.preload = 'auto';
+      newAudio.autoplay = true;
+      const [dir, ext] = URLXD[lang];
+      newAudio.src = dir + file + ext;
+      newAudio.onerror = (event: ErrorEvent) => {
+        event.stopPropagation();
+        newAudio.setAttribute('disabled', 'disabled');
+        if (onerror) onerror({ code });
+      };
     }
-    newAudio.onerror = (event: ErrorEvent) => {
-      event.stopPropagation();
-      newAudio.setAttribute('disabled', 'disabled');
-      if (onerror) onerror({ code });
-    };
   }
 }

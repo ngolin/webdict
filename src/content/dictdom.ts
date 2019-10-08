@@ -14,8 +14,9 @@ DICTDOM.innerHTML = [
   '  </div>',
   '  <form class="lanx-form lanx-none">',
   '    <div class="lanx-done">',
-  '      <button class="lanx-dall" title="提交">共用</button>',
-  '      <button class="lanx-down" title="提交">私用</button>',
+  // '      <button class="lanx-dall" title="提交">共用</button>',
+  // '      <button class="lanx-down" title="提交">私用</button>',
+  '      <button class="lanx-down">提交</button>',
   '    </div>',
   '    <div class="lanx-back"></div>',
   '  </form>',
@@ -28,14 +29,13 @@ DICTDOM.addEventListener('mouseup', event => {
 });
 
 const root = document.createElement('div');
-const rootId = 'lanx-wedict-root';
+const rootId = (root.id = 'lanx-wedict-root');
 root.style.boxSizing = 'border-box';
 root.style.position = 'static';
 root.style.outline = 'none';
 root.style.border = 'none';
 root.style.height = '0';
 root.style.width = '0';
-root.id = rootId;
 
 const shadow = root.attachShadow({ mode: 'open' });
 const style = document.createElement('style');

@@ -23,9 +23,7 @@ export const enum LanguageCode {
   JP = 'jp',
 }
 
-export const enum DefineScope {
-  ALL = 'all',
-  OWN = 'own',
-}
-
-LanguageCode.EN;
+// export const enum DefineScope {
+//   ALL = 'all',
+//   OWN = 'own',
+// }

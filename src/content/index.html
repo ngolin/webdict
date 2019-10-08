@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>content</title>
+    <link href="index.css" rel="stylesheet" />
+    <style>
+      .lanx-mark-0,
+      .lanx-mark-1 {
+        display: none;
+      }
+      .lanx-edit-0:focus ~ .lanx-back .lanx-mark-0 {
+        display: inline;
+      }
+      .lanx-edit-1:focus ~ .lanx-back .lanx-mark-1 {
+        display: inline;
+      }
+      body {
+        background-color: #333;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Example 01 -->
+    <div
+      class="lanx-root lanx-root-more lanx-root-above"
+      style="top: 150px; left: 150px;"
+    >
+      <div class="lanx-main">
+        <div class="lanx-view">
+          <div class="lanx-pron lanx-pron-0">
+            <div class="lanx-pron-puk">
+              [<span class="lanx-pron-play" disabled="disabled">wɜːd</span>,
+              <span class="lanx-pron-play">wɜːd</span>]
+            </div>
+            <div class="lanx-pron-pos">noun</div>
+            <div class="lanx-pron-pus">
+              [<span class="lanx-pron-play">wɜ:rd</span>]
+            </div>
+          </div>
+          <div class="lanx-pron lanx-pron-1">
+            <div class="lanx-pron-puk">»</div>
+            <div class="lanx-pron-pos">
+              <span class="lanx-pron-play">pīn</span>
+              <span class="lanx-pron-play">yīn</span>
+            </div>
+            <div class="lanx-pron-pus">«</div>
+          </div>
+          <div class="lanx-pron lanx-pron-2">
+            <div class="lanx-pron-puk">»</div>
+            <div class="lanx-pron-pos">
+              <span class="lanx-pron-play"
+                ><span class="lanx-jyut-1">ng</span
+                ><span class="lanx-jyut-2">o</span
+                ><span class="lanx-jyut-3">2</span></span
+              >
+              <span class="lanx-pron-play"
+                ><span class="lanx-jyut-1">l</span
+                ><span class="lanx-jyut-2">in</span
+                ><span class="lanx-jyut-3">4</span></span
+              >
+            </div>
+            <div class="lanx-pron-pus">«</div>
+          </div>
+          <div class="lanx-head">
+            <div class="lanx-word">word</div>
+            <div class="lanx-hide"></div>
+            <div class="lanx-mean">
+              <span class="lanx-mean-0">字，词；</span
+              ><span class="lanx-mean-1">word</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="lanx-foot"></div>
+    </div>
+    <!-- Example 02 -->
+    <div
+      class="lanx-root lanx-root-less lanx-root-below"
+      style="top: 150px; left: 150px;"
+    >
+      <div class="lanx-main">
+        <div class="lanx-view">
+          <div class="lanx-head">
+            <div class="lanx-word">word</div>
+            <div class="lanx-hide"></div>
+            <div class="lanx-mean">字，词，字，词，字，词，字，词，字，词</div>
+          </div>
+        </div>
+      </div>
+      <div class="lanx-foot"></div>
+    </div>
+    <!-- Example 03 -->
+    <div
+      class="lanx-root lanx-root-less lanx-root-below"
+      style="top: 250px; left: 150px;"
+    >
+      <div class="lanx-main">
+        <div class="lanx-view lanx-none">
+          <div class="lanx-head">
+            <div class="lanx-word">word</div>
+            <div class="lanx-hide"></div>
+            <div class="lanx-mean">字，词，字，词，字，词，字，词，字，词</div>
+          </div>
+        </div>
+        <form class="lanx-form">
+          <textarea class="lanx-edit lanx-area">字，词</textarea>
+          <div class="lanx-done">
+            <button class="lanx-down">提交</button>
+          </div>
+          <div class="lanx-back">word</div>
+        </form>
+      </div>
+      <div class="lanx-foot"></div>
+    </div>
+    <!-- Example 04 -->
+    <div
+      class="lanx-root lanx-root-less lanx-root-below"
+      style="top: 250px; left: 350px;"
+    >
+      <div class="lanx-main">
+        <div class="lanx-view lanx-none">
+          <div class="lanx-head">
+            <div class="lanx-word">word</div>
+            <div class="lanx-hide"></div>
+            <div class="lanx-mean">字，词，字，词，字，词，字，词，字，词</div>
+          </div>
+        </div>
+        <form class="lanx-form">
+          <input
+            class="lanx-edit lanx-line lanx-edit-0"
+            name="adv"
+            value="字，词"
+            placeholder="adv"
+            title="adv"
+          />
+          <input
+            class="lanx-edit lanx-line lanx-edit-1"
+            name="adj"
+            value="字，词"
+            placeholder="adj"
+            title="adv"
+          />
+          <div class="lanx-done">
+            <button class="lanx-down">提交</button>
+          </div>
+          <div class="lanx-back">
+            word<span class="lanx-mark-0">@adv</span
+            ><span class="lanx-mark-1">@adj</span>
+          </div>
+        </form>
+      </div>
+      <div class="lanx-foot"></div>
+    </div>
+    <style>
+      .lanx-main {
+        left: 0;
+        transform: translateX(-50%);
+      }
+    </style>
+    <script>
+      document.querySelectorAll('form').forEach(form => {
+        form.addEventListener('submit', event => {
+          event.preventDefault();
+          const data = Array.from(form.querySelectorAll('.lanx-edit')).filter(
+            elem => !elem.classList.contains('lanx-none')
+          );
+          reduce(({ name, value }, data) => ((data[name] = value), data), {});
+          console.log('data', data);
+        });
+      });
+    </script>
+  </body>
+</html>

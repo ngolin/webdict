@@ -10,7 +10,7 @@ export default function(fetcher: Fetcher) {
   let _rect: Rect = null!;
   let _enterCount = 3;
   let _index = 0;
-  const [Main, View, Word, Hide, Mean, Form, Back, Dall, Down] = [
+  const [Main, View, Word, Hide, Mean, Form, Back, /* Dall, */ Down] = [
     'main',
     'view',
     'word',
@@ -18,7 +18,7 @@ export default function(fetcher: Fetcher) {
     'mean',
     'form',
     'back',
-    'dall',
+    // 'dall',
     'down',
   ].map(id => DICTDOM.querySelector(`.lanx-${id}`) as HTMLElement);
 
@@ -78,19 +78,19 @@ export default function(fetcher: Fetcher) {
     }
     return null;
   }
-  Dall.addEventListener('click', event => {
-    event.preventDefault();
-    event.stopPropagation();
-    const data = getDefData();
-    if (data) {
-      fetcher.define({
-        word: _entries[_index].word,
-        data,
-        type: 'all',
-      });
-    }
-    hideDict();
-  });
+  // Dall.addEventListener('click', event => {
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  //   const data = getDefData();
+  //   if (data) {
+  //     fetcher.define({
+  //       word: _entries[_index].word,
+  //       data,
+  //       type: 'all',
+  //     });
+  //   }
+  //   hideDict();
+  // });
   Down.addEventListener('click', event => {
     event.preventDefault();
     event.stopPropagation();
@@ -163,10 +163,14 @@ export default function(fetcher: Fetcher) {
           _entries[last ? 0 : _index + 1].word
         }]`
       );
+      // COMMIT: dall, down -> down
+      Down.style.color = '#8f0610';
     } else {
       DICTDOM.classList.remove('lanx-root-more');
       DICTDOM.classList.add('lanx-root-less');
       Word.setAttribute('title', '词条');
+      // COMMIT: dall, down -> down
+      Down.style.color = '#07255e';
     }
     // update prons
     const meand = new Map<string, number[]>();

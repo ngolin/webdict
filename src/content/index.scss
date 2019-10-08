@@ -304,7 +304,7 @@
     flex: initial;
     display: flex;
   }
-  &-dall,
+  // &-dall,
   &-down {
     @include dispadmar(block, 6px 9px !important, 4px 0 0 !important);
     font-family: $font-family-text;
@@ -320,14 +320,15 @@
     &:hover {
       background-color: $main-border-color !important;
     }
+    color: gray;
   }
 
-  &-dall {
-    color: $pron-us-color;
-  }
-  &-down {
-    color: $pron-uk-color;
-  }
+  // &-dall {
+  //   color: $pron-us-color;
+  // }
+  // &-down {
+  //   color: $pron-uk-color;
+  // }
   &-foot {
     transition: $transition;
     position: absolute;
