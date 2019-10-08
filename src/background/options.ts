@@ -11,18 +11,18 @@ let options: OptionProps = {
   jp: false,
 };
 
-const dpath = {
+const dIcons = {
   '16': 'disabled/icon16.png',
   '32': 'disabled/icon32.png',
   '48': 'disabled/icon48.png',
   '128': 'disabled/icon128.png',
 };
 
-const { icons: epath } = chrome.runtime.getManifest();
+const { icons: eIcons } = chrome.runtime.getManifest();
 
-function setIcon(enabled) {
+function setIcon(enabled: boolean) {
   chrome.browserAction.setIcon({
-    path: enabled ? epath : dpath,
+    path: enabled ? eIcons : dIcons,
   });
 }
 
@@ -37,10 +37,13 @@ chrome.browserAction.onClicked.addListener(({ id, url }) => {
   } else {
     chrome.tabs.query({ currentWindow: true, url: `${host}/*` }, tabs => {
       if (tabs && tabs[0]) {
+        // 已有，不重复打开
         chrome.tabs.update(tabs[0].id, { active: true });
       } else if (/^((http|ws|ftp)s?|file|data):/i.test(url)) {
+        // 当前非空白页
         chrome.tabs.create({ url: `${host}/` });
       } else {
+        // 当前空白页
         chrome.tabs.update(id, { url: `${host}/` });
       }
     });
@@ -54,7 +57,7 @@ export default function getOptions() {
 window.getOptions = getOptions;
 
 window.setOptions = (key, val) => {
-  if (key == 'on') {
+  if (key === 'on') {
     setIcon(val);
   }
   options = { ...options, [key]: val };
