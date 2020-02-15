@@ -64,5 +64,4 @@ window.setOptions = (key, val) => {
   }
   options = { ...options, [key]: val };
   chrome.storage.sync.set({ options });
-  console.log(options);
 };

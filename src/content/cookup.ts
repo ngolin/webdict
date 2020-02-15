@@ -44,7 +44,6 @@ export default function(data, lang: 'en' | 'zh'): Pron[] {
       const mean = key.split(SECRET).slice(-1)[0];
       const lang = lps.map(({ lang }) => lang).join(SECRET);
       const pinv = lps.map(({ pinv }) => pinv).join('; ');
-      console.log(lang, pinv, mean);
       return { lang, pron: ['»', pinv, '«'], mean };
     }) as Pron[];
   }

@@ -1,27 +1,24 @@
 let anchor = 0;
 
 function find(): HTMLElement | null {
-  const findParent = (e1: HTMLElement, e2: HTMLElement) => {
-    const parents = [];
-    while (e1) {
-      parents.push(e1);
-      e1 = e1.parentElement;
+  const map = new Map<HTMLElement, number>();
+
+  for (let p of document.querySelectorAll('p') as NodeListOf<HTMLElement>) {
+    let weight = 1 << 14;
+    while (p) {
+      map.set(p, (map.get(p) || 0) + weight);
+      p = p.parentElement;
+      weight >>= 1;
     }
-    while (e2) {
-      if (parents.find(e => e === e2)) {
-        return e2;
-      }
-      e2 = e2.parentElement;
-    }
-    return null;
-  };
-  const es = document.querySelectorAll('p') as NodeListOf<HTMLElement>;
-  if (es.length) {
-    return Array.from(es).reduce((e1, e2) => {
-      return e1 && findParent(e1, e2);
-    });
   }
-  return null;
+  let [root, weight] = [null, 0];
+  for (const [_root, _weight] of map.entries()) {
+    if (_weight > weight) {
+      weight = _weight;
+      root = _root;
+    }
+  }
+  return root;
 }
 
 function mark(char) {
@@ -73,7 +70,7 @@ function mask(node: Node) {
     };
     for (let i = 0; i < text.length; i++) {
       const f = mark(text.charAt(i));
-      if (!(f & flag) || flag === 0b10) {
+      if (!(f & flag) || (flag === 0b10 && i - start > 1)) {
         spanOf(text.slice(start, i));
         start = i;
       }
