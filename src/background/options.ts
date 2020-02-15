@@ -1,6 +1,7 @@
 import { host } from '../fetch';
 // declare const window: any;
 import { BGWindow, OptionProps } from '.';
+import { BackgroundAction } from '../shared/enums';
 
 declare const window: BGWindow;
 
@@ -27,21 +28,22 @@ function setIcon(enabled: boolean) {
 }
 
 chrome.storage.sync.get('options', ({ options: _options }) => {
-  setIcon(_options.on);
-  options = _options;
+  if (_options) {
+    setIcon(_options.on);
+    options = _options;
+  }
 });
 
 chrome.browserAction.onClicked.addListener(({ id, url }) => {
-  if (url.toLowerCase().startsWith(host)) {
-    // setWebdict(!webdictDisabled);
+  if (/^((http|ws|ftp)s?|file|data):/i.test(url)) {
+    chrome.tabs.sendMessage(id, {
+      action: BackgroundAction.MASKING,
+    });
   } else {
     chrome.tabs.query({ currentWindow: true, url: `${host}/*` }, tabs => {
       if (tabs && tabs[0]) {
         // 已有，不重复打开
         chrome.tabs.update(tabs[0].id, { active: true });
-      } else if (/^((http|ws|ftp)s?|file|data):/i.test(url)) {
-        // 当前非空白页
-        chrome.tabs.create({ url: `${host}/` });
       } else {
         // 当前空白页
         chrome.tabs.update(id, { url: `${host}/` });

@@ -13,50 +13,50 @@ module.exports = {
     return o;
   }, {}),
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: '[name].js'
+    path: path.resolve(__dirname, 'webdict'),
+    filename: '[name].js',
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.ts', '.tsx']
+    extensions: ['.js', '.jsx', '.ts', '.tsx'],
   },
   module: {
     rules: [
       {
         test: /\.(ts|tsx)$/i,
-        loader: ['babel-loader', 'ts-loader']
+        loader: ['babel-loader', 'ts-loader'],
       },
       {
         test: /\.(js|jsx)$/i,
-        loader: 'babel-loader'
+        loader: 'babel-loader',
       },
       {
         test: /\.s[ac]ss$/i,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+        use: ['style-loader', 'css-loader', 'sass-loader'],
       },
       {
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader']
+        use: ['style-loader', 'css-loader'],
       },
       {
         test: /\.(svg|png|jpg|gif)$/i,
         loader: 'file-loader',
         options: {
           name: '[name].[ext]',
-          outputPath: 'static/'
-        }
-      }
-    ]
+          outputPath: 'static/',
+        },
+      },
+    ],
   },
   plugins: [
-    new CleanWebpackPlugin(['dist'], {
-      root: __dirname
+    new CleanWebpackPlugin(['webdict'], {
+      root: __dirname,
     }),
     new CopyWebpackPlugin([
       {
-        to: path.join(__dirname, 'dist'),
+        to: path.join(__dirname, 'webdict'),
         from: path.join(__dirname, 'src', 'copy'),
-        toType: 'dir'
-      }
-    ])
-  ]
+        toType: 'dir',
+      },
+    ]),
+  ],
 };

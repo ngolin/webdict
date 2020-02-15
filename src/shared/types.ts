@@ -39,6 +39,7 @@ export namespace BackgroundData {
   export type OnPlayError = PageScriptData.Playme;
   export type AddNote = { url: string };
   export type Highlight = undefined;
+  export type Masking = undefined;
 }
 
 export interface Fetcher {

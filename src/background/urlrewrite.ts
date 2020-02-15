@@ -12,15 +12,15 @@ const rewritedict = {
   'gerrit.googlesource.com': 'gerrit-googlesource.proxy.ustclug.org',
 };
 
-if (chrome.i18n.getUILanguage() === 'zh-CN') {
-  chrome.webRequest.onBeforeRequest.addListener(
-    ({ url }) => {
-      for (const key in rewritedict) {
-        url = url.replace(key, rewritedict[key]);
-      }
-      return { redirectUrl: url };
-    },
-    { urls: Object.keys(rewritedict).map(url => `*://${url}/*`) },
-    ['blocking']
-  );
-}
+// if (chrome.i18n.getUILanguage() === 'zh-CN') {
+chrome.webRequest.onBeforeRequest.addListener(
+  ({ url }) => {
+    for (const key in rewritedict) {
+      url = url.replace(key, rewritedict[key]);
+    }
+    return { redirectUrl: url };
+  },
+  { urls: Object.keys(rewritedict).map(url => `*://${url}/*`) },
+  ['blocking']
+);
+// }

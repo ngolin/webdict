@@ -1,6 +1,7 @@
 import { PageScriptData, BackgroundData } from '../shared/types';
 import { PageScriptAction, BackgroundAction } from '../shared/enums';
 import highlightSelection from './highlight';
+import maskWords from './masking';
 import trigger from './trigger';
 type Message = { action: BackgroundAction; data: any };
 
@@ -26,12 +27,12 @@ const { onPlayError, onHighlight } = trigger({
 });
 
 chrome.runtime.onMessage.addListener(({ action, data }: Message) => {
-  if (action == BackgroundAction.PLAY_ERROR) {
+  if (action === BackgroundAction.PLAY_ERROR) {
     onPlayError(data);
-  } else if (action == BackgroundAction.HIGHLIGHT) {
+  } else if (action === BackgroundAction.HIGHLIGHT) {
     highlightSelection();
     onHighlight();
-  } else if (action == BackgroundAction.ADD_NOTE) {
+  } else if (action === BackgroundAction.ADD_NOTE) {
     const noteText = window
       .getSelection()
       .toString()
@@ -47,7 +48,7 @@ chrome.runtime.onMessage.addListener(({ action, data }: Message) => {
         data: actionData,
       });
     }
-  } else {
-    console.error(`Unknown action: ${action}`);
+  } else if (action === BackgroundAction.MASKING) {
+    maskWords();
   }
 });
