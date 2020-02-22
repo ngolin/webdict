@@ -24,7 +24,6 @@
     "http://*/*",
     "webRequest",
     "<all_urls>",
-    "activeTab",
     "storage",
     "tabs"
   ],

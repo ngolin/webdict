@@ -4,11 +4,13 @@ function find(): HTMLElement | null {
   const map = new Map<HTMLElement, number>();
 
   for (let p of document.querySelectorAll('p') as NodeListOf<HTMLElement>) {
-    let weight = 1 << 14;
-    while (p) {
-      map.set(p, (map.get(p) || 0) + weight);
-      p = p.parentElement;
-      weight >>= 1;
+    if (p.childNodes.length) {
+      let weight = 1 << 14;
+      while (p) {
+        map.set(p, (map.get(p) || 0) + weight);
+        p = p.parentElement;
+        weight >>= 1;
+      }
     }
   }
   let [root, weight] = [null, 0];
