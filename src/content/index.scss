@@ -33,6 +33,7 @@
         // }
         @for $i from 0 through 9 {
           &-pron-#{$i}:hover ~ .lanx-head .lanx-mean-#{$i} {
+            text-decoration: underline;
             color: $pron-uk-color;
           }
         }
@@ -59,6 +60,7 @@
         // }
         @for $i from 0 through 9 {
           &-pron-#{$i}:hover ~ .lanx-head .lanx-mean-#{$i} {
+            text-decoration: underline;
             color: $pron-us-color;
           }
         }
