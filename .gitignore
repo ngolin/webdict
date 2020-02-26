@@ -1,0 +1,7 @@
+/.vscode/*
+!/.vscode/settings.json
+/package-lock.json
+/webdict
+**/node_modules
+**/.DS_Store
+**/*.zip
