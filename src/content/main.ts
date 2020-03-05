@@ -2,10 +2,10 @@ import { PageScriptData, BackgroundData } from '../shared/types';
 import { PageScriptAction, BackgroundAction } from '../shared/enums';
 import highlightSelection from './highlight';
 import maskWords from './masking';
-import trigger from './trigger';
+import webdict from '../webdict';
 type Message = { action: BackgroundAction; data: any };
 
-const { onPlayError, onHighlight } = trigger({
+const { onPlayError, hideDict: onHighlight } = webdict({
   playme(data) {
     const action = PageScriptAction.PLAY_SOUND;
     chrome.runtime.sendMessage({ action, data });

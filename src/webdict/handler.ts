@@ -63,9 +63,9 @@ export default function(fetcher: Fetcher) {
   });
 
   function getDefData() {
-    const data = Array.from(Form.querySelectorAll('.lanx-edit') as NodeListOf<
-      HTMLInputElement
-    >).reduce((data, { value, name, defaultValue: deval }) => {
+    const data = Array.from(
+      Form.querySelectorAll('.lanx-edit') as NodeListOf<HTMLInputElement>
+    ).reduce((data, { value, name, defaultValue: deval }) => {
       value = value.trim();
       deval = deval.trim();
       if (value !== deval) {
@@ -203,9 +203,9 @@ export default function(fetcher: Fetcher) {
           span.innerHTML = pron[p];
           continue;
         }
-        Array.from(span.querySelectorAll('span[data-code]') as NodeListOf<
-          HTMLElement
-        >).forEach(button => {
+        Array.from(
+          span.querySelectorAll('span[data-code]') as NodeListOf<HTMLElement>
+        ).forEach(button => {
           const mark =
             lang === 'en'
               ? p === 0

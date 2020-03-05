@@ -1,6 +1,6 @@
 export default (mark: string) => {
   if (mark.startsWith('han-CN')) {
-    return '简体中国';
+    return '简体中国';
   }
   if (mark.startsWith('han-TW')) {
     return '繁體臺灣';
