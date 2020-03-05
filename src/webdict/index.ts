@@ -8,38 +8,12 @@ export default function(fetcher: Fetcher) {
   let mouseupEnabled = true;
   let dictEnabled = true;
 
-  function capture(): [string, Rect] {
-    const sltn = window.getSelection();
-    const text = shorten(sltn.toString().trim());
-    const rect = sltn.getRangeAt(0).getBoundingClientRect();
-    if (
-      text &&
-      rect.left >= 0 &&
-      rect.right <= document.documentElement.clientWidth &&
-      rect.right > rect.left &&
-      staticText(sltn.anchorNode)
-    ) {
-      const x = window.pageXOffset;
-      const y = window.pageYOffset;
-      return [
-        text,
-        {
-          left: rect.left + x,
-          right: rect.right + x,
-          bottom: rect.bottom + y,
-          top: rect.top + y,
-        },
-      ];
-    }
-    throw new Error();
-  }
-
   document.addEventListener(
     'mousedown',
     ({ target }) => {
       mouseupEnabled = dictEnabled && staticText(target);
       try {
-        mousedownTargetIsNotLanxEdit = !(target as HTMLElement).classList.contains(
+        mousedownTargetIsNotLanxEdit = !(target as Element).classList.contains(
           'lanx-edit'
         );
       } catch (e) {
@@ -53,8 +27,8 @@ export default function(fetcher: Fetcher) {
     if (mouseupEnabled && staticText(target)) {
       if (target !== document) {
         try {
-          const [text, rect] = capture();
-          tryToShowDict(text, rect as Rect);
+          const [text, rect] = captureSelection();
+          tryToShowDict(text, rect);
         } catch (e) {
           hideDict();
         }
@@ -65,10 +39,37 @@ export default function(fetcher: Fetcher) {
   });
 
   return {
+    toggleDictEnabled() {
+      dictEnabled = !dictEnabled;
+      return dictEnabled;
+    },
     onPlayError,
     hideDict,
-    toggleDictEnabled() {
-      return (dictEnabled = !dictEnabled);
-    },
   };
+}
+
+function captureSelection(): [string, Rect] {
+  const sltn = window.getSelection();
+  const text = shorten(sltn.toString().trim());
+  const rect = sltn.getRangeAt(0).getBoundingClientRect();
+  if (
+    text &&
+    rect.left >= 0 &&
+    rect.right <= document.documentElement.clientWidth &&
+    rect.right > rect.left &&
+    staticText(sltn.anchorNode)
+  ) {
+    const x = window.pageXOffset;
+    const y = window.pageYOffset;
+    return [
+      text,
+      {
+        left: rect.left + x,
+        right: rect.right + x,
+        bottom: rect.bottom + y,
+        top: rect.top + y,
+      },
+    ];
+  }
+  throw new Error();
 }
