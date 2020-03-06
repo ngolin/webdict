@@ -1,17 +1,22 @@
 body.lanx-mask-0 span.lanx-span-0 {
   text-decoration: underline solid gray;
+  text-decoration-skip-ink: none;
   color: transparent;
   transition: 200ms;
 }
+
 body.lanx-mask-0 span.lanx-span-0:hover {
   text-decoration: none;
   color: inherit;
 }
+
 body.lanx-mask-1 span.lanx-span-1 {
   text-decoration: underline solid gray;
+  text-decoration-skip-ink: none;
   color: transparent;
   transition: 200ms;
 }
+
 body.lanx-mask-1 span.lanx-span-1:hover {
   text-decoration: none;
   color: inherit;
