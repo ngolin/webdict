@@ -1,3 +1,5 @@
+import { detect } from '../shared/utility';
+
 let anchor = 0;
 
 function find(): HTMLElement | null {
@@ -23,14 +25,18 @@ function find(): HTMLElement | null {
   return root;
 }
 
-function mark(char) {
-  if (/[a-zA-Z]/.test(char)) {
-    return 0b1;
+function mark(char: string) {
+  if (char === '-') {
+    return 0b100;
   }
-  if (/[\u4E00-\u9FA5]/.test(char)) {
-    return 0b10;
+  switch (detect(char)) {
+    case 0:
+      return 0b100;
+    case 1:
+      return 0b1;
+    case 2:
+      return 0b10;
   }
-  return 0b100;
 }
 
 function mask(node: Node) {
