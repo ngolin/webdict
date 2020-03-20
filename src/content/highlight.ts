@@ -88,7 +88,7 @@ function highlightTextRange(range: Range) {
   span.setAttribute(
     'style',
     // `background-color: ${hlcolours[Date.now() % hlcolours.length]}`
-    'background-color: #FFDF61; display: inline; float: none; width: auto'
+    'background-color: #FFDF61; display: inline; float: none; width: auto; font-size: inherit'
   );
   range.surroundContents(span);
 }
